@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function() {
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>FuelFit — Smart AI Nutrition &amp; Diet Coaching</title>
+  <meta name="description" content="FuelFit is the ultimate local-first, privacy-respecting nutrition tracker and diet coach. AI food photo analysis, scientific nutrition scoring, and personalized coaching — all running locally on your device." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d97706'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='system-ui'%3ESH%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --bg-elevated: #12121a; --bg-card: rgba(255,255,255,0.04);
+      --text-primary: #f5f5f5; --text-secondary: #a1a1aa; --text-muted: #71717a;
+      --accent: #3b82f6; --accent-light: #60a5fa;
+      --accent-gradient: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+      --border: rgba(255,255,255,0.08); --shadow: 0 20px 60px -15px rgba(0,0,0,0.5);
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :root.light {
+      --bg: #f5f5f7;
+      --bg-elevated: #ffffff;
+      --bg-card: rgba(0, 0, 0, 0.03);
+      --text-primary: #1d1d1f;
+      --text-secondary: #515154;
+      --text-muted: #86868b;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+    }
+    :root.light .bg-mesh {
+      background:
+        radial-gradient(ellipse 80% 50% at 80% 10%, rgba(59,130,246,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 20% 80%, rgba(217,119,6,0.04) 0%, transparent 60%);
+    }
+    :root.light .bg-grid {
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    :root.light nav.scrolled {
+      background: rgba(245,245,247,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    :root.light .btn-secondary {
+      background: rgba(0,0,0,0.03);
+    }
+    :root.light .btn-secondary:hover {
+      background: rgba(0,0,0,0.06);
+    }
+    :root.light .feature-card,
+    :root.light .metric,
+    :root.light .provider-card,
+    :root.light .stack-item {
+      background: var(--bg-elevated);
+      border-color: var(--border);
+    }
+    :root.light .highlight-box {
+      background: rgba(59,130,246,0.04);
+      border-color: rgba(59,130,246,0.15);
+      color: var(--text-primary);
+    }
+    :root.light .nav-links a:hover {
+      background: rgba(0,0,0,0.03);
+    }
+    :root.light footer {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      margin-left: 8px;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+      transform: scale(1.05);
+    }
+    :root.light .theme-toggle-btn:hover {
+      background: rgba(0,0,0,0.04);
+    }
+    .theme-toggle-btn svg {
+      transition: transform 0.3s ease;
+    }
+    .theme-toggle-btn:active svg {
+      transform: rotate(30deg);
+    }
+    :root.light .sun-icon { display: none; }
+    :root:not(.light) .moon-icon { display: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text-primary); font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: rgba(59, 130, 246, 0.3); color: #fff; }
+
+    .bg-mesh { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 50% at 80% 10%, rgba(59,130,246,0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 60% at 20% 80%, rgba(217,119,6,0.06) 0%, transparent 60%); }
+    .bg-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+    nav.scrolled { background: rgba(10,10,15,0.8); backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
+    .nav-logo .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: 900; }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 20px; transition: var(--transition); }
+    .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+
+    main { position: relative; z-index: 1; }
+
+    .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 32px 60px; max-width: 1000px; margin: 0 auto; }
+    .hero-icon { width: 80px; height: 80px; border-radius: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; box-shadow: 0 16px 40px -8px rgba(59,130,246,0.35); overflow: hidden; }
+    .hero-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .hero h1 .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero .subtitle { font-size: clamp(1.1rem, 2vw, 1.35rem); color: var(--text-secondary); max-width: 640px; margin-bottom: 40px; line-height: 1.6; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 40px; font-size: 13px; font-weight: 700; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: var(--accent-light); margin-bottom: 28px; }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-light); box-shadow: 0 0 0 0 rgba(96,165,250,0.4); animation: pulse 2s infinite; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 32px; font-size: 15px; font-weight: 700; border-radius: 16px; text-decoration: none; transition: var(--transition); cursor: pointer; border: none; position: relative; overflow: hidden; }
+    .btn-primary { background: var(--accent-gradient); color: white; box-shadow: 0 12px 32px -8px rgba(59,130,246,0.4); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -8px rgba(59,130,246,0.5); }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+
+    .section { padding: 80px 32px; max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-header .eyebrow { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent-light); margin-bottom: 16px; }
+    .section-header h2 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .section-header p { color: var(--text-secondary); font-size: 16px; max-width: 560px; margin: 0 auto; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .feature-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 32px; transition: var(--transition); backdrop-filter: blur(12px); }
+    .feature-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.4); }
+    .feature-icon { width: 48px; height: 48px; border-radius: 14px; background: rgba(59,130,246,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 20px; border: 1px solid rgba(59,130,246,0.2); }
+    .feature-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+    .feature-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .metric { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 28px; text-align: center; backdrop-filter: blur(12px); }
+    .metric-value { font-size: 28px; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+    .metric-label { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+
+    .provider-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 40px; margin-bottom: 20px; transition: var(--transition); backdrop-filter: blur(12px); }
+    .provider-card:hover { border-color: rgba(255,255,255,0.15); }
+    .provider-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .provider-card .cost { font-size: 28px; font-weight: 800; color: var(--accent-light); margin-bottom: 4px; }
+    .provider-card .cost-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+    .provider-card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+    .provider-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+    .tag-green { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .tag-yellow { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .tag-blue { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+
+    .stack-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 40px; }
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+    .stack-item h4 { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .stack-item p { font-size: 13px; color: var(--text-secondary); }
+
+    .highlight-box { background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.15); border-radius: 20px; padding: 24px 32px; margin-top: 32px; text-align: center; }
+    .highlight-box p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+    .highlight-box a { color: var(--accent-light); font-weight: 700; text-decoration: none; }
+    .highlight-box a:hover { text-decoration: underline; }
+
+    footer { background: rgba(0,0,0,0.3); border-top: 1px solid var(--border); padding: 60px 32px 40px; text-align: center; position: relative; z-index: 1; }
+    .footer-inner { max-width: 800px; margin: 0 auto; }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; font-weight: 800; font-size: 18px; }
+    .footer-brand .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: 900; }
+    .footer-links { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-copyright { color: var(--text-muted); font-size: 13px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-in { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(96,165,250,0.4); } 70% { box-shadow: 0 0 0 6px rgba(96,165,250,0); } 100% { box-shadow: 0 0 0 0 rgba(96,165,250,0); } }
+
+    @media (max-width: 768px) {
+      .hero { padding: 100px 20px 40px; }
+      .section { padding: 60px 20px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="avatar">SH</div>
+      <span>Samuel Hu</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div class="nav-links">
+        <a href="index.html">Apps</a>
+        <a href="support.html">Support</a>
+        <a href="privacy-fuelfit.html">Privacy</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-badge animate-in">
+        <div class="dot"></div>
+        In Development
+      </div>
+      <div class="hero-icon animate-in delay-1"><img src="fuelfit-icon.png" alt="FuelFit" /></div>
+      <h1 class="animate-in delay-2">FuelFit <span class="gradient-text">Smart Nutrition</span></h1>
+      <p class="subtitle animate-in delay-3">The ultimate local-first, privacy-respecting nutrition tracker and AI diet coach. Snap a photo of your plate to get instant calorie and macro estimates, receive personalized coaching, and keep complete control of your health data — no cloud, no accounts, no tracking.</p>
+      <div class="hero-actions animate-in delay-3">
+        <a href="#features" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+          Explore Features
+        </a>
+        <a href="privacy-fuelfit.html" class="btn btn-secondary">Privacy Policy</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header animate-in">
+        <div class="eyebrow">At a Glance</div>
+        <h2>Built for Real Nutrition</h2>
+        <p>Engineered for accuracy, designed for privacy, and optimized for daily use.</p>
+      </div>
+      <div class="metrics animate-in delay-1">
+        <div class="metric">
+          <div class="metric-value">7</div>
+          <div class="metric-label">Languages</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">0.69</div>
+          <div class="metric-label">USD/Year (AI)</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Local-First</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">0</div>
+          <div class="metric-label">Accounts Required</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-header animate-in">
+        <div class="eyebrow">Features</div>
+        <h2>What FuelFit Does</h2>
+        <p>Every feature is built around the core principle: powerful nutrition tools that respect your privacy.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card animate-in delay-1">
+          <div class="feature-icon">📸</div>
+          <h3>AI Food Photo Analysis</h3>
+          <p>Snap a picture of your plate to instantly estimate calories, macros (protein, carbs, fat, fiber), sugar, sodium, and hydration. Supports Qwen, OpenAI, Mistral, and any OpenAI-compatible endpoint via Custom provider.</p>
+        </div>
+        <div class="feature-card animate-in delay-2">
+          <div class="feature-icon">📊</div>
+          <h3>Scientific Nutrition Scoring</h3>
+          <p>View your daily FuelScore (0–100) calculated from calorie adherence, macro balance, micronutrient coverage, meal regularity, and satiety quality. Calories are recalculated from macros using scientific Atwater factors.</p>
+        </div>
+        <div class="feature-card animate-in delay-3">
+          <div class="feature-icon">🧠</div>
+          <h3>Personal AI Diet Coach</h3>
+          <p>Get personalized feedback, actionable suggestions, and habit-aware tips tailored to your goals (maintain, lose, or gain weight). Toggle it off anytime for template-based coaching that runs entirely on your device.</p>
+        </div>
+        <div class="feature-card animate-in delay-1">
+          <div class="feature-icon">📈</div>
+          <h3>Insights &amp; Patterns</h3>
+          <p>Comprehensive nutrition scoring, streak tracking, weekly digest summaries, and visual trend analysis with beautiful charts. The "AI" badge appears only when coaching is genuinely generated by your provider.</p>
+        </div>
+        <div class="feature-card animate-in delay-2">
+          <div class="feature-icon">🔐</div>
+          <h3>True Privacy-First Design</h3>
+          <p>No accounts, no servers, no tracking. All data stored in IndexedDB. API keys are encrypted at rest. Photos are sent directly from your device to your chosen provider — we never see or store them.</p>
+        </div>
+        <div class="feature-card animate-in delay-3">
+          <div class="feature-icon">🌍</div>
+          <h3>7 Languages + iOS Widgets</h3>
+          <p>Fully localized in English, Simplified Chinese, German, Spanish, French, Japanese, and Korean. Sync your daily nutrition rings and hydration data to native iOS widgets. Themes include light, dark, and vibrant "Pulse" mode.</p>
+        </div>
+      </div>
+
+      <div class="highlight-box animate-in delay-2">
+        <p><strong>Bring Your Own API Key.</strong> FuelFit has no subscription fee. You choose the AI provider and pay them directly. Typical cost for an active user: <strong>~$0.69/year</strong> with Qwen, <strong>~$1.45/year</strong> with OpenAI. <a href="fuelfit-api-guide.html">View the full API Provider Setup Guide →</a></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header animate-in">
+        <div class="eyebrow">AI Providers</div>
+        <h2>Choose Your Provider</h2>
+        <p>You bring your own key. FuelFit connects directly from your device. No intermediaries, no markups.</p>
+      </div>
+      <div class="provider-card animate-in delay-1">
+        <span class="provider-tag tag-green">Cheapest · Default</span>
+        <h3>Qwen / Alibaba Cloud</h3>
+        <div class="cost">~$0.69<span style="font-size:16px;color:var(--text-muted);">/year</span></div>
+        <div class="cost-label">qwen3-vl-flash · Strong food recognition · Free credits for new accounts</div>
+        <p>New Alibaba Cloud accounts receive 1 million free tokens — enough for months of normal use. The qwen3-vl-flash model is specifically designed for image understanding and handles Chinese cuisine especially well. You can upgrade to qwen3-vl-plus for higher accuracy anytime.</p>
+      </div>
+      <div class="provider-card animate-in delay-2">
+        <span class="provider-tag tag-blue">Most Reliable</span>
+        <h3>OpenAI</h3>
+        <div class="cost">~$1.45<span style="font-size:16px;color:var(--text-muted);">/year</span></div>
+        <div class="cost-label">gpt-4o-mini · Predictable behavior · Broad ecosystem</div>
+        <p>Strong reliability and broad ecosystem support. Slightly more expensive than Qwen but extremely predictable. Pre-filled Base URL and model in FuelFit — swap to gpt-4o for higher accuracy if needed. Start with as little as $5.</p>
+      </div>
+      <div class="provider-card animate-in delay-3">
+        <span class="provider-tag tag-yellow">EU-Based</span>
+        <h3>Mistral</h3>
+        <div class="cost">~$1.60<span style="font-size:16px;color:var(--text-muted);">/year</span></div>
+        <div class="cost-label">mistral-small-latest · Open-weights · EU jurisdiction</div>
+        <p>European AI company with open-weights models. Choose this for EU-jurisdiction processing or if you prefer Mistral's stack. Also offers a free tier with limited usage.</p>
+      </div>
+      <div class="provider-card animate-in delay-1">
+        <span class="provider-tag tag-yellow">Power User</span>
+        <h3>Custom Provider</h3>
+        <div class="cost">Varies</div>
+        <div class="cost-label">Any OpenAI-compatible endpoint · OpenRouter · Self-hosted</div>
+        <p>Use Anthropic Claude via OpenRouter, Google Gemini, a self-hosted vLLM server, or any other OpenAI-compatible API. FuelFit needs a multimodal model that accepts images. The Base URL and Model fields are fully editable for complete flexibility.</p>
+      </div>
+
+      <div class="highlight-box animate-in delay-2">
+        <p><strong>Honest AI Label.</strong> When coaching falls back to built-in templates (toggle off, no key, or AI failure), the "AI" badge disappears from the Insights card so you always know what's actually generated. <a href="fuelfit-api-guide.html">Read the full transparency guide →</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="avatar">SH</div>
+        <span>Samuel Hu</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Apps</a>
+        <a href="support.html">Support</a>
+        <a href="fuelfit-api-guide.html">API Guide</a>
+        <a href="privacy-inkecho.html">InkEcho Privacy</a>
+        <a href="privacy-fuelfit.html">FuelFit Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 Samuel Hu. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+    const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; } }); }, { threshold: 0.1 });
+    document.querySelectorAll('.animate-in').forEach(el => { el.style.animationPlayState = 'paused'; observer.observe(el); });
+
+    // Theme toggle logic
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      });
+    }
+  </script>
+</body>
+</html>

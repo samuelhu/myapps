@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function() {
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Samuel Hu Apps — InkEcho &amp; FuelFit</title>
+  <meta name="description" content="Discover apps crafted by Samuel Hu: InkEcho, a delightful Chinese character learning journey for children, and FuelFit, intelligent nutrition tracking and diet coaching." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d97706'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='system-ui'%3ESH%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-elevated: #12121a;
+      --bg-card: rgba(255,255,255,0.04);
+      --text-primary: #f5f5f5;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #d97706;
+      --accent-light: #f59e0b;
+      --accent-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #ea580c 100%);
+      --blue-accent: #3b82f6;
+      --blue-gradient: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 20px 60px -15px rgba(0,0,0,0.5);
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :root.light {
+      --bg: #f5f5f7;
+      --bg-elevated: #ffffff;
+      --bg-card: rgba(0, 0, 0, 0.03);
+      --text-primary: #1d1d1f;
+      --text-secondary: #515154;
+      --text-muted: #86868b;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+    }
+    :root.light .bg-mesh {
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(217,119,6,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 80% 80%, rgba(59,130,246,0.04) 0%, transparent 60%);
+    }
+    :root.light .bg-grid {
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    :root.light nav.scrolled {
+      background: rgba(245,245,247,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    :root.light .btn-secondary {
+      background: rgba(0,0,0,0.03);
+    }
+    :root.light .btn-secondary:hover {
+      background: rgba(0,0,0,0.06);
+    }
+    :root.light .feature-chip,
+    :root.light .app-principle-badge {
+      background: rgba(0,0,0,0.02);
+    }
+    :root.light .principle {
+      background: rgba(0,0,0,0.01);
+    }
+    :root.light .nav-links a:hover {
+      background: rgba(0,0,0,0.03);
+    }
+    :root.light footer {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      margin-left: 8px;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+      transform: scale(1.05);
+    }
+    :root.light .theme-toggle-btn:hover {
+      background: rgba(0,0,0,0.04);
+    }
+    .theme-toggle-btn svg {
+      transition: transform 0.3s ease;
+    }
+    .theme-toggle-btn:active svg {
+      transform: rotate(30deg);
+    }
+    :root.light .sun-icon { display: none; }
+    :root:not(.light) .moon-icon { display: none; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: rgba(217, 119, 6, 0.3); color: #fff; }
+
+    /* --- Background mesh --- */
+    .bg-mesh {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(217,119,6,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 80% 80%, rgba(59,130,246,0.08) 0%, transparent 60%);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* --- Navigation --- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: var(--transition);
+    }
+    nav.scrolled {
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--text-primary);
+      font-weight: 800; font-size: 18px; letter-spacing: -0.02em;
+    }
+    .nav-logo .avatar {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--accent-gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: white; font-weight: 900;
+    }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 14px; font-weight: 600; padding: 8px 16px;
+      border-radius: 20px; transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+    .nav-links a.active { color: var(--accent-light); background: rgba(217,119,6,0.1); }
+
+    /* --- Main content wrapper --- */
+    main { position: relative; z-index: 1; }
+
+    /* --- Hero Section --- */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      padding: 120px 32px 80px; max-width: 1000px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 40px; font-size: 13px; font-weight: 700;
+      background: rgba(217,119,6,0.1); border: 1px solid rgba(217,119,6,0.2);
+      color: var(--accent-light); margin-bottom: 32px;
+      animation: float 5s ease-in-out infinite;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent-light);
+      box-shadow: 0 0 0 0 rgba(245,158,11,0.4); animation: pulse 2s infinite;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900;
+      line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px;
+    }
+    .hero h1 .gradient-text {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p.subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.35rem); color: var(--text-secondary);
+      max-width: 640px; margin-bottom: 48px; line-height: 1.6;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 32px; font-size: 15px; font-weight: 700;
+      border-radius: 16px; text-decoration: none; transition: var(--transition);
+      cursor: pointer; border: none; position: relative; overflow: hidden;
+    }
+    .btn-primary {
+      background: var(--accent-gradient); color: white;
+      box-shadow: 0 12px 32px -8px rgba(217,119,6,0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px -8px rgba(217,119,6,0.5);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+    .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid transparent; }
+    .btn-ghost:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+
+    /* --- Section headers --- */
+    .section-header {
+      text-align: center; margin-bottom: 64px; padding: 0 32px;
+    }
+    .section-header .eyebrow {
+      font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--accent-light); margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 900; letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .section-header p {
+      color: var(--text-secondary); font-size: 16px; max-width: 560px; margin: 0 auto;
+    }
+
+    /* --- Apps Section --- */
+    .apps-section { padding: 100px 32px; max-width: 1200px; margin: 0 auto; }
+    .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; }
+
+    .app-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 28px;
+      overflow: hidden; transition: var(--transition);
+      box-shadow: var(--shadow); backdrop-filter: blur(12px);
+      display: flex; flex-direction: column; position: relative;
+    }
+    .app-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    }
+    .app-card .card-glow {
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(217,119,6,0.4), transparent);
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .app-card:hover .card-glow { opacity: 1; }
+
+    .app-card-header {
+      padding: 40px 40px 0; display: flex; align-items: flex-start; gap: 20px;
+    }
+    .app-icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; flex-shrink: 0; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .app-icon.amber { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .app-icon.blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+    .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+    .app-meta { flex: 1; }
+    .app-meta h3 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .app-meta .tagline { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+    .app-meta .platforms {
+      display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+    }
+    .platform-tag {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.06);
+      color: var(--text-muted); border: 1px solid var(--border);
+    }
+
+    .app-card-body {
+      padding: 24px 40px 32px; flex: 1; display: flex; flex-direction: column;
+    }
+    .app-card-body p {
+      color: var(--text-secondary); font-size: 15px; line-height: 1.7; margin-bottom: 24px; flex: 1;
+    }
+    .app-features {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+    }
+    .feature-chip {
+      font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 20px;
+      background: rgba(255,255,255,0.04); color: var(--text-secondary); border: 1px solid var(--border);
+    }
+    .app-card-footer {
+      padding: 0 40px 40px; display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .card-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 700;
+      padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); transition: var(--transition);
+    }
+    .card-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+    .card-link.accent { color: var(--accent-light); border-color: rgba(217,119,6,0.3); }
+    .card-link.accent:hover { background: rgba(217,119,6,0.1); }
+
+    /* --- App card principle badges --- */
+    .app-principles { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .app-principle-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+      padding: 5px 10px; border-radius: 20px; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    .app-principle-badge:hover { border-color: rgba(255,255,255,0.15); color: var(--text-primary); }
+
+    /* --- Philosophy / Principles Section --- */
+    .principles-section {
+      padding: 80px 32px 40px; max-width: 1200px; margin: 0 auto;
+    }
+    .principles-banner {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 28px;
+      padding: 48px 40px; text-align: center; backdrop-filter: blur(12px);
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+    }
+    .principles-banner::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(217,119,6,0.6), rgba(59,130,246,0.6), transparent);
+      opacity: 0.5;
+    }
+    .principles-banner h2 {
+      font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em;
+    }
+    .principles-banner .tagline {
+      color: var(--text-secondary); font-size: 16px; margin-bottom: 36px; max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+    .principles-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+    }
+    .principle {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: 24px; border-radius: 20px; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border); transition: var(--transition);
+    }
+    .principle:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); transform: translateY(-4px); }
+    .principle-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+      background: rgba(217,119,6,0.08); border: 1px solid rgba(217,119,6,0.2);
+      color: var(--accent-light); flex-shrink: 0;
+    }
+    .principle-icon.blue { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2); color: var(--blue-accent); }
+    .principle-icon.green { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.2); color: #4ade80; }
+    .principle-icon.red { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); color: #f87171; }
+    .principle h3 { font-size: 15px; font-weight: 800; color: var(--text-primary); }
+    .principle p { font-size: 13px; color: var(--text-secondary); text-align: center; line-height: 1.5; }
+
+    /* --- Footer --- */
+    footer {
+      background: rgba(0,0,0,0.3); border-top: 1px solid var(--border);
+      padding: 60px 32px 40px; text-align: center; position: relative; z-index: 1;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; }
+    .footer-brand {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-bottom: 24px; font-weight: 800; font-size: 18px;
+    }
+    .footer-brand .avatar {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--accent-gradient); display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: white; font-weight: 900;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-copyright { color: var(--text-muted); font-size: 13px; }
+
+    /* --- Animations --- */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
+      100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      opacity: 0; transform: translateY(30px);
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .hero { padding: 100px 20px 60px; }
+      .apps-section { padding: 60px 20px; }
+      .apps-grid { grid-template-columns: 1fr; }
+      .app-card-header { padding: 32px 24px 0; }
+      .app-card-body { padding: 20px 24px 24px; }
+      .app-card-footer { padding: 0 24px 32px; }
+      .nav-links { display: none; }
+      .principles-section { padding: 60px 20px 40px; }
+      .principles-banner { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="avatar">SH</div>
+      <span>Samuel Hu</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div class="nav-links">
+        <a href="index.html" class="active">Apps</a>
+        <a href="support.html">Support</a>
+        <a href="privacy-inkecho.html">Privacy</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge animate-in">
+        <div class="dot"></div>
+        Indie Developer
+      </div>
+      <h1 class="animate-in delay-1">Crafting thoughtful apps<br>for everyday <span class="gradient-text">moments</span></h1>
+      <p class="subtitle animate-in delay-2">
+        I build apps that blend beautiful design with practical utility. From children's education to personal health, each project is crafted with care and attention to detail.
+      </p>
+      <div class="hero-actions animate-in delay-3">
+        <a href="#apps" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+          Explore Apps
+        </a>
+        <a href="support.html" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          Get Support
+        </a>
+      </div>
+    </section>
+
+    <!-- Principles Section -->
+    <section class="principles-section">
+      <div class="principles-banner animate-in">
+        <h2>Built on Trust, Not Tracking</h2>
+        <p class="tagline">Every app I create follows a simple promise: no ads, no accounts, no tracking. Your data lives only on your device.</p>
+        <div class="principles-grid">
+          <div class="principle animate-in delay-1">
+            <div class="principle-icon red">🚫</div>
+            <h3>Ad-Free</h3>
+            <p>Zero advertisements. No banners, no pop-ups, no interruptions.</p>
+          </div>
+          <div class="principle animate-in delay-2">
+            <div class="principle-icon blue">🔒</div>
+            <h3>Privacy-First</h3>
+            <p>No data collection, no analytics, no third-party tracking.</p>
+          </div>
+          <div class="principle animate-in delay-3">
+            <div class="principle-icon">👤</div>
+            <h3>No Accounts</h3>
+            <p>No sign-ups, no logins, no passwords to remember.</p>
+          </div>
+          <div class="principle animate-in delay-4">
+            <div class="principle-icon green">📱</div>
+            <h3>Your Data, Your Device</h3>
+            <p>Everything stored locally. No cloud servers, no uploads.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apps Grid -->
+    <section class="apps-section" id="apps">
+      <div class="section-header animate-in">
+        <div class="eyebrow">Portfolio</div>
+        <h2>Apps I've Built</h2>
+        <p>Each app is designed with a singular focus: make something genuinely useful and delightful.</p>
+      </div>
+
+      <div class="apps-grid">
+        <!-- FuelFit Card -->
+        <article class="app-card animate-in delay-1">
+          <div class="card-glow"></div>
+          <div class="app-card-header">
+            <div class="app-icon blue"><img src="fuelfit-icon.png" alt="FuelFit" /></div>
+            <div class="app-meta">
+              <h3>FuelFit</h3>
+              <p class="tagline">Intelligent nutrition tracking &amp; diet coaching</p>
+              <div class="platforms">
+                <span class="platform-tag">iOS</span>
+                <span class="platform-tag">iPad</span>
+                <span class="platform-tag">In Development</span>
+              </div>
+            </div>
+          </div>
+          <div class="app-card-body">
+            <p>AI-powered nutrition companion that tracks meals, analyzes food photos with Gemini/OpenAI, and provides personalized diet coaching. All data stays local on your device — no accounts, no servers, no compromises.</p>
+            <div class="app-features">
+              <span class="feature-chip">AI Photo Analysis</span>
+              <span class="feature-chip">Macro Tracking</span>
+              <span class="feature-chip">Diet Coach</span>
+              <span class="feature-chip">Local-only</span>
+              <span class="feature-chip">Encrypted Keys</span>
+            </div>
+            <div class="app-principles">
+              <span class="app-principle-badge">🚫 Ad-Free</span>
+              <span class="app-principle-badge">🔒 No Tracking</span>
+              <span class="app-principle-badge">👤 No Account</span>
+              <span class="app-principle-badge">📱 Local Data</span>
+            </div>
+          </div>
+          <div class="app-card-footer">
+            <a href="fuelfit.html" class="card-link accent">
+              Learn More
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+            <a href="privacy-fuelfit.html" class="card-link">
+              Privacy Policy
+            </a>
+          </div>
+        </article>
+
+        <!-- InkEcho Card -->
+        <article class="app-card animate-in delay-2">
+          <div class="card-glow"></div>
+          <div class="app-card-header">
+            <div class="app-icon amber"><img src="inkecho-icon.png" alt="InkEcho" /></div>
+            <div class="app-meta">
+              <h3>InkEcho <span style="font-family:'Noto Serif SC',serif;font-weight:600;font-size:16px;opacity:0.7">遇见汉字</span></h3>
+              <p class="tagline">Adaptive Chinese character learning for children</p>
+              <div class="platforms">
+                <span class="platform-tag">iOS</span>
+                <span class="platform-tag">iPad</span>
+                <span class="platform-tag">Pending Review</span>
+              </div>
+            </div>
+          </div>
+          <div class="app-card-body">
+            <p>A delightful, adaptive journey through 3,000+ Chinese characters. Combines spaced repetition (SM-2), original illustrated storybooks, and handwriting stroke practice into a seamless learning experience for children.</p>
+            <div class="app-features">
+              <span class="feature-chip">Spaced Repetition</span>
+              <span class="feature-chip">Original Stories</span>
+              <span class="feature-chip">Handwriting</span>
+              <span class="feature-chip">Offline-first</span>
+              <span class="feature-chip">Privacy-safe</span>
+            </div>
+            <div class="app-principles">
+              <span class="app-principle-badge">🚫 Ad-Free</span>
+              <span class="app-principle-badge">🔒 No Tracking</span>
+              <span class="app-principle-badge">👤 No Account</span>
+              <span class="app-principle-badge">📱 Local Data</span>
+            </div>
+          </div>
+          <div class="app-card-footer">
+            <a href="inkecho.html" class="card-link accent">
+              Learn More
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+            <a href="privacy-inkecho.html" class="card-link">
+              Privacy Policy
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- About / Contact teaser -->
+    <section class="apps-section" style="padding-top:0;">
+      <div class="section-header animate-in">
+        <div class="eyebrow">Contact</div>
+        <h2>Questions or Feedback?</h2>
+        <p>I'm always happy to hear from users. Whether it's a bug report, feature request, or just to say hello.</p>
+      </div>
+      <div style="text-align:center;" class="animate-in delay-1">
+        <a href="support.html" class="btn btn-secondary" style="margin-top:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact Support
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="avatar">SH</div>
+        <span>Samuel Hu</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Apps</a>
+        <a href="support.html">Support</a>
+        <a href="privacy-inkecho.html">InkEcho Privacy</a>
+        <a href="privacy-fuelfit.html">FuelFit Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 Samuel Hu. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Intersection observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-in').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+
+    // Theme toggle logic
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      });
+    }
+  </script>
+</body>
+</html>

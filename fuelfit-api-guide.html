@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuelFit — AI Provider Setup Guide</title>
+  <meta name="description" content="How to get an API key and enable AI food photo analysis in FuelFit. Full cost breakdown, step-by-step setup, and privacy transparency." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d97706'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='system-ui'%3ESH%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --bg-elevated: #12121a; --bg-card: rgba(255,255,255,0.04);
+      --text-primary: #f5f5f5; --text-secondary: #a1a1aa; --text-muted: #71717a;
+      --accent: #3b82f6; --accent-light: #60a5fa; --accent-dim: rgba(59,130,246,0.1);
+      --green: #4ade80; --green-dim: rgba(74,222,128,0.1);
+      --yellow: #fbbf24; --yellow-dim: rgba(251,191,36,0.1);
+      --red: #f87171; --red-dim: rgba(248,113,113,0.1);
+      --border: rgba(255,255,255,0.08);
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    :root.light {
+      --bg: #f5f5f7;
+      --bg-elevated: #ffffff;
+      --bg-card: rgba(0, 0, 0, 0.03);
+      --text-primary: #1d1d1f;
+      --text-secondary: #515154;
+      --text-muted: #86868b;
+      --accent-dim: rgba(59, 130, 246, 0.05);
+      --green-dim: rgba(74, 222, 128, 0.08);
+      --yellow-dim: rgba(251, 191, 36, 0.08);
+      --red-dim: rgba(248, 113, 113, 0.08);
+      --code-bg: #f1f5f9;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+    }
+    :root.light .bg-mesh {
+      background: radial-gradient(ellipse 80% 50% at 50% 20%, rgba(59,130,246,0.04) 0%, transparent 60%), radial-gradient(ellipse 60% 60% at 50% 80%, rgba(217,119,6,0.03) 0%, transparent 60%);
+    }
+    :root.light .bg-grid {
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    :root.light nav.scrolled {
+      background: rgba(245,245,247,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    :root.light .card {
+      background: var(--bg-elevated);
+      border-color: var(--border);
+    }
+    :root.light th {
+      background: rgba(0,0,0,0.02);
+    }
+    :root.light .nav-links a:hover {
+      background: rgba(0,0,0,0.03);
+    }
+    :root.light footer {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      margin-left: 8px;
+    }
+    .theme-toggle-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+      transform: scale(1.05);
+    }
+    :root.light .theme-toggle-btn:hover {
+      background: rgba(0,0,0,0.04);
+    }
+    .theme-toggle-btn svg {
+      transition: transform 0.3s ease;
+    }
+    .theme-toggle-btn:active svg {
+      transform: rotate(30deg);
+    }
+    :root.light .sun-icon { display: none; }
+    :root:not(.light) .moon-icon { display: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-primary); font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: rgba(59, 130, 246, 0.3); color: #fff; }
+
+    .bg-mesh { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 50% at 50% 20%, rgba(59,130,246,0.08) 0%, transparent 60%), radial-gradient(ellipse 60% 60% at 50% 80%, rgba(217,119,6,0.06) 0%, transparent 60%); }
+    .bg-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.3; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+    nav.scrolled { background: rgba(10,10,15,0.8); backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
+    .nav-logo .avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: 900; }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 20px; transition: var(--transition); }
+    .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+
+    main { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 120px 32px 80px; }
+
+    header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    header .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+
+    section { margin-bottom: 3rem; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+    h2::before { content: ''; width: 4px; height: 22px; background: var(--accent); border-radius: 2px; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.75rem; color: var(--text-primary); }
+
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(12px); }
+    .card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem; }
+    .card p:last-child { margin-bottom: 0; }
+
+    .step { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
+    .step-num { flex-shrink: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+    .step-content { flex: 1; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+    .step-content strong { color: var(--text-primary); }
+
+    code { font-family: 'SF Mono', Monaco, monospace; background: var(--bg-elevated); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.85rem; color: var(--accent-light); border: 1px solid var(--border); }
+    a { color: var(--accent-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+    .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,222,128,0.2); }
+    .badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
+    .badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+    th, td { padding: 0.65rem 0.85rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    th { background: var(--bg-elevated); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+    td strong { color: var(--text-primary); }
+
+    .note { background: var(--accent-dim); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 12px 12px 0; margin: 1rem 0; color: var(--text-secondary); font-size: 0.9rem; }
+    .note strong { color: var(--text-primary); }
+    .warn { background: var(--yellow-dim); border-left: 4px solid var(--yellow); padding: 1rem 1.25rem; border-radius: 0 12px 12px 0; margin: 1rem 0; color: var(--text-secondary); font-size: 0.9rem; }
+    .warn strong { color: var(--text-primary); }
+
+    .cost-est { background: var(--green-dim); border: 1px solid rgba(74,222,128,0.2); border-radius: 16px; padding: 1.25rem 1.5rem; margin: 1rem 0; text-align: center; }
+    .cost-est .big { font-size: 2rem; font-weight: 800; color: var(--green); }
+    .cost-est .label { font-size: 0.85rem; color: var(--text-secondary); }
+
+    .provider-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .provider-header h3 { margin: 0; }
+
+    ol, ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--text-secondary); }
+
+    .back-link { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .back-link a { color: var(--accent-light); font-weight: 600; font-size: 14px; }
+    .back-link a:hover { text-decoration: underline; }
+
+    footer { background: rgba(0,0,0,0.3); border-top: 1px solid var(--border); padding: 40px 32px; text-align: center; position: relative; z-index: 1; }
+    .footer-inner { max-width: 800px; margin: 0 auto; }
+    .footer-links { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 600; }
+    .footer-copyright { color: var(--text-muted); font-size: 13px; }
+
+    @media (max-width: 768px) {
+      body { padding: 0; }
+      main { padding: 100px 20px 60px; }
+      h1 { font-size: 1.6rem; }
+      th, td { padding: 0.5rem; font-size: 0.8rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="avatar">SH</div>
+      <span>Samuel Hu</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div class="nav-links">
+        <a href="index.html">Apps</a>
+        <a href="fuelfit.html">FuelFit</a>
+        <a href="support.html">Support</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <header>
+      <h1>FuelFit — AI Provider Setup Guide</h1>
+      <p class="subtitle">How to get an API key and enable AI food photo analysis</p>
+      <div class="note" style="text-align: left; margin-top: 1rem;">
+        <strong>100% Transparency:</strong> We never want you to be caught by surprise. Here's how FuelFit handles your data:
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          <li><strong>No backend server</strong> — all your data stays encrypted on your device only</li>
+          <li><strong>Direct API calls</strong> — AI calls go from your device straight to the provider you chose</li>
+          <li><strong>Explicit opt-in</strong> — you choose to enable AI during onboarding; you can skip it entirely</li>
+          <li><strong>One toggle for minimizing data exposure</strong> — the <strong>AI Diet Coach</strong> can be turned off in Settings. With it off, your provider is contacted only when you actively take a food photo.</li>
+          <li><strong>Honest AI label</strong> — when coaching falls back to a built-in template, the "AI" badge disappears so you always know what's actually generated</li>
+          <li><strong>Export/Import</strong> — your data is portable via Settings → Export/Import</li>
+        </ul>
+      </div>
+    </header>
+
+    <section>
+      <h2>How Much Does It Cost?</h2>
+      <div class="card">
+        <p>FuelFit uses AI to analyze your food photos. You bring your own API key (BYOK) — there is <strong>no subscription fee from FuelFit itself</strong>. The cost depends entirely on which provider you choose and how often you log meals.</p>
+
+        <h3>Estimated Annual Cost (Active User)</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">Based on ~6 photos/day + 12 coach calls/day, 365 days/year</p>
+
+        <table>
+          <thead>
+            <tr><th>Provider</th><th>Default Model</th><th>Estimated Annual Cost</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen (Alibaba)</strong></td>
+              <td><code>qwen3-vl-flash</code></td>
+              <td><strong>~$0.69 / year</strong></td>
+              <td><span class="badge badge-green">Cheapest · Default</span> Strong food recognition; ideal for users in China</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td><code>gpt-4o-mini</code></td>
+              <td><strong>~$1.45 / year</strong></td>
+              <td><span class="badge badge-green">Most reliable</span> Widely supported, predictable behavior</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong></td>
+              <td><code>mistral-small-latest</code></td>
+              <td><strong>~$1.60 / year</strong></td>
+              <td><span class="badge badge-yellow">EU-based</span> Open-weights provider, good privacy stance</td>
+            </tr>
+            <tr>
+              <td><strong>Custom</strong></td>
+              <td>Your choice</td>
+              <td>Varies</td>
+              <td>Any OpenAI-compatible endpoint — OpenRouter, Claude, self-hosted, etc.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          <strong>You can change the model anytime.</strong> The defaults above are convenience starting points. When you pick a provider in onboarding or Settings, the Base URL and Model fields appear pre-filled and editable — switch <code>qwen3-vl-flash</code> to <code>qwen3-vl-plus</code> for higher accuracy, or to <code>gpt-4o</code> on OpenAI, before you verify.
+        </div>
+
+        <div class="warn">
+          <strong>Disclaimer & Billing Safety:</strong>
+          <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+            <li><strong>Pricing Control:</strong> All API rates and cost estimates are provided for reference only. AI providers control their own pricing and can change rates at any time. FuelFit does not charge subscription fees, does not process billing, and has no control over API charges.</li>
+            <li><strong>Billing Limits:</strong> We strongly recommend setting strict <strong>hard billing limits</strong> (usage caps) on your AI provider's developer dashboard to prevent unexpected charges.</li>
+            <li><strong>Medical Disclaimer:</strong> FuelFit and its AI coach are for informational and educational purposes only. They do not constitute medical advice. Always consult a qualified healthcare professional before making significant changes to your diet or fitness routine.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Option 1: Qwen / Alibaba Cloud (Default — Cheapest)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Qwen (DashScope) — <code>qwen3-vl-flash</code></h3>
+          <span class="badge badge-green">Cheapest · Default</span>
+        </div>
+        <p>Qwen is FuelFit's default provider. The <code>qwen3-vl-flash</code> model is the cheapest dedicated vision model available and handles food photos especially well, including Chinese cuisine. New Alibaba Cloud accounts get free credits.</p>
+
+        <h3>Step-by-Step Setup</h3>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Create an Alibaba Cloud account</strong><br>
+            Go to <a href="https://account.alibabacloud.com/register" target="_blank">account.alibabacloud.com/register</a> (international) or <a href="https://account.aliyun.com" target="_blank">account.aliyun.com</a> (China) and sign up.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Activate Model Studio (百炼)</strong><br>
+            Go to <a href="https://bailian.console.aliyun.com" target="_blank">bailian.console.aliyun.com</a> and activate the Model Studio service. New accounts get <strong>free credits</strong> (1 million tokens) — enough for months of normal use.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Create an API key</strong><br>
+            In the Model Studio console → <strong>API Key Management</strong> → click <strong>"Create API Key"</strong> → copy the key (starts with <code>sk-</code>).
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Enter in FuelFit</strong><br>
+            Open FuelFit → <strong>Settings → AI Services</strong> → make sure <strong>Qwen</strong> is selected (it's the default). Base URL and model arrive pre-filled — bump <code>qwen3-vl-flash</code> to <code>qwen3-vl-plus</code> if you want higher accuracy. Paste your key and tap <strong>Verify Connection</strong>.
+          </div>
+        </div>
+
+        <div class="cost-est">
+          <div class="big">~$0.69 / year</div>
+          <div class="label">Estimated cost for active user (6 photos + 12 coach calls/day)</div>
+        </div>
+
+        <div class="note">
+          <strong>Free tier:</strong> New accounts receive 1 million free tokens — enough for months of usage. The <code>qwen3-vl-flash</code> model is specifically designed for image understanding and is the cheapest vision model available.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Option 2: OpenAI (Most Reliable)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>OpenAI — <code>gpt-4o-mini</code></h3>
+          <span class="badge badge-green">Most reliable</span>
+        </div>
+        <p>OpenAI offers strong reliability and broad ecosystem support. Slightly more expensive than Qwen but extremely predictable behavior — a solid default if you're not in China.</p>
+
+        <h3>Step-by-Step Setup</h3>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Create an OpenAI account</strong><br>
+            Go to <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a> and sign up with your email or Google/Microsoft account.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Add a payment method</strong><br>
+            Navigate to <a href="https://platform.openai.com/settings/organization/billing" target="_blank">Settings → Billing</a> and add a credit card. You can start with as little as $5.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Create an API key</strong><br>
+            Go to <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a> → click <strong>"Create new secret key"</strong> → give it a name (e.g., "FuelFit") → click <strong>"Create key"</strong>.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Copy and save your key</strong><br>
+            Copy the key immediately (it starts with <code>sk-</code>). You won't be able to see it again. Store it somewhere safe.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <strong>Enter in FuelFit</strong><br>
+            Open FuelFit → <strong>Settings → AI Services</strong> → select <strong>OpenAI</strong>. Base URL <code>https://api.openai.com/v1</code> and model <code>gpt-4o-mini</code> are pre-filled. Paste your <code>sk-...</code> key, then tap <strong>Verify Connection</strong>.
+          </div>
+        </div>
+
+        <div class="cost-est">
+          <div class="big">~$1.45 / year</div>
+          <div class="label">Estimated cost for active user (6 photos + 12 coach calls/day)</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Option 3: Mistral (EU-based)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Mistral — <code>mistral-small-latest</code></h3>
+          <span class="badge badge-yellow">EU-based</span>
+        </div>
+        <p>Mistral is a European AI company with open-weights models. Choose this if you want EU-jurisdiction processing or simply prefer Mistral's stack.</p>
+
+        <h3>Step-by-Step Setup</h3>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Create a Mistral account</strong><br>
+            Go to <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a> and sign up.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Add credits</strong><br>
+            Navigate to <strong>Billing</strong> and add a credit card. Mistral offers a free tier with limited usage.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Create an API key</strong><br>
+            Go to <strong>API Keys</strong> → click <strong>"Create new key"</strong> → copy it immediately.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Enter in FuelFit</strong><br>
+            Open FuelFit → <strong>Settings → AI Services</strong> → select <strong>Mistral</strong>. Base URL <code>https://api.mistral.ai/v1</code> and model <code>mistral-small-latest</code> are pre-filled. Paste your key and tap <strong>Verify Connection</strong>.
+          </div>
+        </div>
+
+        <div class="cost-est">
+          <div class="big">~$1.60 / year</div>
+          <div class="label">Estimated cost for active user (6 photos + 12 coach calls/day)</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Option 4: Custom (Any OpenAI-Compatible Endpoint)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Custom Provider</h3>
+          <span class="badge badge-yellow">Power user</span>
+        </div>
+        <p>If you want to use a provider that isn't built in — Anthropic Claude, Google Gemini, a self-hosted vLLM server, OpenRouter as a multi-provider gateway, or any other OpenAI-compatible API — pick <strong>Custom</strong> and enter the endpoint yourself.</p>
+
+        <div class="warn">
+          <strong>Why Anthropic isn't built in:</strong> Anthropic's official OpenAI-compatible adapter has been unreliable for vision requests (images can be silently dropped). If you want to use Claude for food photos, route through <a href="https://openrouter.ai" target="_blank">OpenRouter</a> as a Custom provider instead — it's the most reliable path today.
+        </div>
+
+        <h3>Step-by-Step Setup</h3>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Get an API key from your chosen provider</strong><br>
+            For example: <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>, <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>, or your self-hosted server.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Find the OpenAI-compatible Base URL</strong><br>
+            Most providers document this. Examples: OpenRouter is <code>https://openrouter.ai/api/v1</code>; Google's OpenAI-compatible endpoint is <code>https://generativelanguage.googleapis.com/v1beta/openai</code>.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Pick a model that supports vision</strong><br>
+            FuelFit needs a multimodal model that accepts images. Examples on OpenRouter: <code>anthropic/claude-3.5-sonnet</code>, <code>google/gemini-2.0-flash</code>, <code>openai/gpt-4o-mini</code>.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Enter in FuelFit</strong><br>
+            Open FuelFit → <strong>Settings → AI Services</strong> → select <strong>Custom</strong> → fill in <strong>Name</strong>, <strong>Base URL</strong>, <strong>Model</strong>, and <strong>API Key</strong> → tap <strong>Verify Connection</strong>.
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>Cost varies wildly</strong> depending on provider and model. OpenRouter publishes a <a href="https://openrouter.ai/models" target="_blank">price-per-token table</a> for every model on its platform.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>AI Coach Toggle</h2>
+      <div class="card">
+        <p>FuelFit's two AI features have very different data-flow profiles, and only one of them needs a toggle:</p>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          <li><strong>Photo analysis is user-initiated.</strong> Nothing is sent to your provider until you tap the camera button. Don't take a photo, no API call happens. There's nothing to toggle off.</li>
+          <li><strong>The AI Diet Coach runs automatically.</strong> When you open the Insights tab or the Home coach card refreshes, FuelFit sends your daily nutrition summary to your provider to generate a coaching message. That's exactly the kind of background call some users don't want — even to a provider they've chosen — for privacy reasons. So this one gets a toggle.</li>
+        </ul>
+        <p style="margin-top: 0.75rem;">Turning the AI Diet Coach off keeps photo analysis fully working but stops every other unprompted API call. The Insights coach card silently switches to built-in template tips that are computed entirely on your device.</p>
+
+        <h3>What Each Feature Does</h3>
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>What It Does</th><th>When It Calls Your Provider</th><th>How to Stop</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Food Photo Analysis</strong></td>
+              <td>Identifies food items and estimates nutrition from photos you take</td>
+              <td>Only when you tap the camera button</td>
+              <td>Don't take photos. (Or clear your API key in Settings.)</td>
+            </tr>
+            <tr>
+              <td><strong>AI Diet Coach</strong></td>
+              <td>Generates coaching messages and daily summaries from your logged data</td>
+              <td>Automatically — when you open Insights, when the Home coach card refreshes</td>
+              <td><span class="badge badge-green">Toggle off</span> Settings → AI Services → AI Diet Coach</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Data Transparency</h3>
+        <div class="note">
+          <strong>What data is sent where:</strong>
+          <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+            <li><strong>Food photo analysis:</strong> the photo plus a short prompt are sent directly to the AI provider you chose. Nothing else.</li>
+            <li><strong>AI Diet Coach (toggle ON):</strong> only your daily nutrition summary numbers are sent — calories, protein, carbs, fat, fiber, sugar, sodium, water, meal count. No photos, no profile details, no historical data beyond today.</li>
+            <li><strong>Template coaching (toggle OFF or AI failure):</strong> messages are computed entirely on-device from your logged data. Nothing leaves your phone.</li>
+          </ul>
+        </div>
+
+        <h3>The "AI" Badge — Honest Attribution</h3>
+        <div class="note">
+          On the Insights tab, the coach card shows a small <strong>"AI"</strong> label only when the message actually came from your AI provider. When the message is built from local templates — because the toggle is off, you have no API key, or the AI call failed — the badge disappears. So you always know whether what you're reading was generated by a model or by FuelFit's own logic.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Frequently Asked Questions</h2>
+      <div class="card">
+        <h3>Is my API key safe?</h3>
+        <p>Yes. Your API key is encrypted at rest and stored only on your device. FuelFit has <strong>no backend server</strong> — it's a purely client-side app. All AI calls go directly from your device to the provider you chose. We never see or collect your data.</p>
+
+        <h3>What about switching devices?</h3>
+        <p>FuelFit includes a built-in <strong>Export/Import</strong> function in Settings. Export your data as a file, then import it on your new device. Your meals, settings, and (encrypted) API keys transfer in one step.</p>
+
+        <h3>Can I use AI for photos only, not coaching?</h3>
+        <p>Yes. Open <strong>Settings → AI Services</strong>, expand the section, and flip the <strong>AI Diet Coach</strong> toggle off. This disables AI-generated coaching messages while keeping AI food photo analysis active. The Insights coach card will then show built-in template tips instead, and the "AI" badge will disappear.</p>
+
+        <h3>Can I use multiple providers?</h3>
+        <p>FuelFit uses one primary provider at a time, but you can configure multiple Custom providers and switch between them in Settings. The three built-in providers (Qwen, OpenAI, Mistral) each remember their own configuration too, so swapping among them is just a tap.</p>
+
+        <h3>What if I run out of credits?</h3>
+        <p>The app will show an error when you try to analyze a photo or when the AI Diet Coach tries to generate a message. If the coach call fails, the Insights card silently falls back to a template tip (no error toast — and the "AI" badge disappears so you know it's a template). Add credits to your provider account and the next AI call will work again. Your meal history is always saved locally.</p>
+
+        <h3>Do I need an API key to use FuelFit?</h3>
+        <p>No. FuelFit works without AI for manual meal logging. You only need an API key if you want photo analysis or AI-generated coaching. With no key configured, all coaching uses built-in templates.</p>
+
+        <h3>Which provider should I choose?</h3>
+        <ul>
+          <li><strong>Default:</strong> Qwen <code>qwen3-vl-flash</code> — cheapest, strong food recognition, free credits for new accounts</li>
+          <li><strong>Most reliable:</strong> OpenAI <code>gpt-4o-mini</code> — predictable behavior, broad ecosystem support</li>
+          <li><strong>EU-based:</strong> Mistral <code>mistral-small-latest</code></li>
+          <li><strong>Anything else (Claude, Gemini, self-hosted):</strong> use the <strong>Custom</strong> option, ideally via <a href="https://openrouter.ai" target="_blank">OpenRouter</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="back-link">
+      <a href="fuelfit.html">← Back to FuelFit</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="index.html">Apps</a>
+        <a href="fuelfit.html">FuelFit</a>
+        <a href="support.html">Support</a>
+        <a href="privacy-fuelfit.html">Privacy</a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 Samuel Hu. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+
+    // Theme toggle logic
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      });
+    }
+  </script>
+</body>
+</html>
