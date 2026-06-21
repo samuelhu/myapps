@@ -180,17 +180,17 @@
         <li>Meal entries and nutrition logs</li>
         <li>Water intake records</li>
         <li>Personal settings (weight, goals, dietary preferences)</li>
-        <li>AI provider API keys (stored in native secure storage)</li>
+        <li>AI provider API keys (stored only on your device using the platform’s built-in secure storage — iOS Keychain on Apple devices and Android Keystore-backed encrypted storage on Android)</li>
       </ul>
       <p>This data never leaves your device unless you explicitly choose to export or share it.</p>
 
-      <h2>4. AI Photo Analysis</h2>
-      <p>FuelFit offers AI-powered food photo analysis. When you use this feature:</p>
+      <h2>4. AI Features & Photo Analysis</h2>
+      <p>FuelFit offers AI-powered food photo analysis and diet coaching. When you use these features:</p>
       <ul>
-        <li><strong>Your photo is sent directly</strong> to the AI provider you select (e.g., Gemini, OpenAI, MiMo, Qwen)</li>
-        <li>You must provide your own API key for the chosen provider</li>
-        <li>Your API key is stored in native secure storage (iOS Keychain / Android Keystore via capacitor-secure-storage-plugin) and is never stored in standard local storage or IndexedDB</li>
-        <li>We do not intermediate, log, or store any images or AI responses</li>
+        <li>You must provide your own API key for your chosen provider (e.g., Gemini, OpenAI, MiMo, Qwen)</li>
+        <li>Your AI provider API keys are stored only on your device using the platform’s built-in secure storage — iOS Keychain on Apple devices and Android Keystore-backed encrypted storage on Android (via <code>capacitor-secure-storage-plugin</code>). They are never sent or shared with third parties, or stored in plain text in the app’s local database (IndexedDB or localStorage).</li>
+        <li>Keys are transmitted directly from your device to your chosen AI provider over HTTPS only when you use food photo analysis or AI coach.</li>
+        <li>We do not intermediate, log, or store any images, keys, or AI responses.</li>
       </ul>
       <p>Please refer to the privacy policy of your chosen AI provider for how they handle images and data.</p>
 
