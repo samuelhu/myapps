@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuelFit — AI 服务商设置指南</title>
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text2: #475569;
+      --muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-light: #fef3c7;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --code-bg: #f1f5f9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --text2: #94a3b8;
+        --muted: #64748b;
+        --border: #334155;
+        --accent: #60a5fa;
+        --accent-light: #1e3a5f;
+        --green: #4ade80;
+        --green-light: #14532d;
+        --yellow: #fbbf24;
+        --yellow-light: #713f12;
+        --red: #f87171;
+        --red-light: #7f1d1d;
+        --code-bg: #1e293b;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text2); font-size: 1.1rem; }
+
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .step-content { flex: 1; }
+
+    code {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: var(--code-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+    .badge-red { background: var(--red-light); color: var(--red); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text2);
+    }
+
+    .note {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .note strong { color: var(--text); }
+
+    .warn {
+      background: var(--yellow-light);
+      border-left: 4px solid var(--yellow);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .warn strong { color: var(--text); }
+
+    .provider-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .provider-header h3 { margin: 0; }
+
+    .cost-est {
+      background: var(--green-light);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .cost-est .big {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .cost-est .label {
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+
+    ol, ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--text2); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 1rem; }
+      h1 { font-size: 1.6rem; }
+      th, td { padding: 0.5rem; font-size: 0.8rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FuelFit — AI 服务商设置指南</h1>
+      <p class="subtitle">如何获取 API 密钥并启用 AI 食物照片分析</p>
+      <div class="note" style="text-align: left; margin-top: 1rem;">
+        <strong>100% 透明度：我们不希望您感到意外。以下是 FuelFit 处理您数据的方式：</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>无后端服务器</strong> — 您的所有数据仅在您的设备上进行加密保存</li>
+    <li><strong>直接 API 调用</strong> — AI 请求直接从您的设备发送到您选择的服务商</li>
+    <li><strong>明确选择加入</strong> — 您可以在新手引导期间选择启用 AI，也可以完全跳过它</li>
+    <li><strong>最小化数据暴露的开关</strong> — 可以在“设置”中关闭 <strong>AI 饮食教练</strong>。关闭后，只有在您主动拍摄食物照片时才会与服务商联系，您的日常营养数据绝不会被自动发送用于教练分析。照片分析本身仅在您选择拍照时运行，因此完全是由用户启动的。</li>
+    <li><strong>真实的 AI 标签</strong> — 当教练建议回退到内置模板（开关关闭、无密钥或 AI 失败）时，“AI”标记会消失，以便您始终清楚哪些内容是真正生成的</li>
+    <li><strong>导入/导出</strong> — 您的数据可以通过“设置 → 导入/导出”进行便携迁移</li>
+  
+        </ul>
+      </div>
+    </header>
+
+    <!-- COST OVERVIEW -->
+    <section>
+      <h2>这需要花多少钱？</h2>
+
+      <div class="card">
+        <p>FuelFit 使用 AI 分析您的食物照片。您需要自备 API 密钥 (BYOK) — FuelFit 本身不收取任何订阅费用。费用完全取决于您选择的服务商以及您记录饮食的频率。</p>
+
+        <h3>估算年均费用（活跃用户）</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">基于每日约 6 张照片（完整记录） + 每日 12 次教练调用（缓存失效），每年 365 天计算</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>服务商</th>
+              <th>默认模型</th>
+              <th>估算年均费用</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen (Alibaba)</strong></td>
+              <td><code>qwen3-vl-flash</code></td>
+              <td><strong>~$0.69 / year</strong></td>
+              <td><span class="badge badge-green">最便宜 · 默认</span> 强大的食物识别能力；中国用户的理想选择</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td><code>gpt-4o-mini</code></td>
+              <td><strong>~$1.45 / year</strong></td>
+              <td><span class="badge badge-green">最可靠</span> 支持广泛，表现可预测</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong></td>
+              <td><code>mistral-small-latest</code></td>
+              <td><strong>~$1.60 / year</strong></td>
+              <td><span class="badge badge-yellow">总部位于欧盟</span> 开源权重服务商，隐私保护较好</td>
+            </tr>
+            <tr>
+              <td><strong>Custom</strong></td>
+              <td>Your choice</td>
+              <td>Varies</td>
+              <td><span class="badge badge-yellow">高级用户</span> 任何兼容 OpenAI 的接口 — OpenRouter、通过 OpenRouter 调用的 Claude、自建服务等。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Token 使用与计费数学（我们是如何计算的）</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">以下是应用代码与您的 AI 服务商通信时所使用的确切 Token 拆分。我们明确计算此项，以便您永远不会感到意外：</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>功能</th>
+              <th>说明</th>
+              <th>平均输入 Token 数</th>
+              <th>平均输出 Token 数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>食物照片分析</strong></td>
+              <td>
+      • 系统提示词：约 500 tokens（规定格式和营养规则）<br>
+      • 用户文本提示词：约 20 tokens（“识别食物...”）<br>
+      • 图像 Tokens:<br>
+        <ul style="margin-top: 0.25rem; margin-left: 1rem; font-size: 0.85rem;">
+          <li><strong>OpenAI:</strong> 765 tokens（适用于典型调整为 768x1024 尺寸照片的高细节分块模式）</li>
+          <li><strong>Qwen:</strong> 约 1,000 tokens（基于分块：每 28x28px 区域 1 token）</li>
+          <li><strong>Mistral:</strong> 约 1,200 tokens（视觉 Token 化）</li>
+        </ul>
+    </td>
+              <td>
+                • OpenAI: <strong>~1,285</strong><br>
+                • Qwen: <strong>~1,520</strong><br>
+                • Mistral: <strong>~1,720</strong>
+              </td>
+              <td><strong>~250</strong> tokens</td>
+            </tr>
+            <tr>
+              <td><strong>AI 饮食教练调用</strong></td>
+              <td>
+      • 系统提示词骨架：约 500 tokens（关于语气、限制、JSON 格式的规则）<br>
+      • 用户上下文：约 250 tokens（当前时间、每日总量、今日餐食列表、轻断食窗口、目标）
+    </td>
+              <td><strong>~750</strong> tokens</td>
+              <td><strong>~80</strong> tokens</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>API 费率与计算（每日 6 张照片 + 12 次教练调用）</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>服务商 / Model</th>
+              <th>API 费率（每百万输入/输出）</th>
+              <th>单张照片费用</th>
+              <th>单次教练调用费用</th>
+              <th>每日费用</th>
+              <th>年均费用（365天）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen</strong> (<code>qwen3-vl-flash</code>)</td>
+              <td>$0.05 / $0.40</td>
+              <td>$0.000176</td>
+              <td>$0.000070</td>
+              <td>$0.001890</td>
+              <td><strong>~$0.69 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong> (<code>gpt-4o-mini</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000343</td>
+              <td>$0.000161</td>
+              <td>$0.003983</td>
+              <td><strong>~$1.45 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong> (<code>mistral-small-latest</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000408</td>
+              <td>$0.000161</td>
+              <td>$0.004374</td>
+              <td><strong>~$1.60 / year</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note"><strong>为什么每天约 12 次教练调用？</strong>应用在本地缓存教练的回复。如果您的记录数据保持一致，它不会调用 API。但是，记录新餐食、更新水摄入或小时变化会立即导致缓存失效。一个记录 6 张照片、4 次水更新，并在 2 个不同小时查看应用的活跃用户，每天大约会发起 12 次教练调用。</div>
+        <div class="note"><strong>您可以随时更改模型。</strong>上述默认值是方便的起点，而非限制。当您在新手引导或“设置”中选择内置服务商时，Base URL 和 Model 字段会预填且可编辑 — 您可以在验证前将 <code>qwen3-vl-flash</code> 升级为 <code>qwen3-vl-plus</code> 以获得更高的准确度，或在 OpenAI 上切换为 <code>gpt-4o</code>。</div>
+
+        <div class="warn">
+          <strong>免责声明与计费安全：</strong>
+          <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+            
+    <li><strong>价格控制：</strong>所有 API 费率、Token 数量和费用估算仅供参考。AI 服务商（OpenAI、阿里云、Mistral）控制其自身定价并可随时更改其费率。FuelFit 不收取任何订阅费用，不处理计费，也无法控制 API 费用。</li>
+    <li><strong>限额设定：</strong>我们强烈建议在您的 AI 服务商开发者控制台中设定严格的 **硬性计费限额**（使用上限），以防由于应用过度使用或密钥泄露导致意外费用。</li>
+    <li><strong>医疗免责声明：</strong>FuelFit 及其 AI 教练仅供信息和教育目的。它们不构成医疗建议、饮食诊断或专业治疗。在对您的饮食或健身计划做出重大更改之前，请务必咨询合格 of 医疗保健专业人员。</li>
+  
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QWEN SETUP -->
+    <section>
+      <h2>选项 1：Qwen / 阿里云（默认 — 最便宜）</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Qwen (DashScope) — <code>qwen3-vl-flash</code></h3>
+          <span class="badge badge-green">最便宜 · 默认</span>
+        </div>
+        <p>Qwen 是 FuelFit 的默认服务商。<code>qwen3-vl-flash</code> 模型是目前最实惠的视觉模型，非常擅长识别各种食物，包括中餐。新开通阿里云账号可获得免费额度。</p>
+        <h3>详细设置步骤</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>创建阿里云账号</strong><br>
+        前往国际站 <a href="https://account.alibabacloud.com/register" target="_blank">account.alibabacloud.com/register</a> 或中国站 <a href="https://account.aliyun.com" target="_blank">account.aliyun.com</a> 并注册。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>开通百炼模型服务</strong><br>
+        前往 <a href="https://bailian.console.aliyun.com" target="_blank">bailian.console.aliyun.com</a> 并激活百炼服务。新账号会获得<strong>免费额度</strong>（100万 tokens）— 足够正常使用数月。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>创建 API 密钥</strong><br>
+        在百炼控制台 → <strong>API Key 管理</strong> → 点击 <strong>“创建 API Key”</strong> → 复制密钥（以 <code>sk-</code> 开头）。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>输入到 FuelFit</strong><br>
+        打开 FuelFit → <strong>设置 → AI 服务</strong> → 确保选中 <strong>Qwen</strong>。Base URL 和模型已预填 — 如果您想要更高的准确性，可以将其从 <code>qwen3-vl-flash</code> 升级为 <code>qwen3-vl-plus</code>。粘贴您的密钥并点击 <strong>“验证连接”</strong>。
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$0.69 / year</div>
+          <div class="label">活跃用户估算费用（每日 6 张照片 + 12 次教练调用）</div>
+        </div>
+        <div class="note"><strong>免费额度：</strong>新账号可获得 100 万免费 tokens — 足够使用数月。<code>qwen3-vl-flash</code> 模型专为图像理解而设计，是目前最实惠的视觉模型。</div>
+      </div>
+    </section>
+
+    <!-- OPENAI SETUP -->
+    <section>
+      <h2>选项 2：OpenAI（最可靠）</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>OpenAI — <code>gpt-4o-mini</code></h3>
+          <span class="badge badge-green">最可靠</span>
+        </div>
+        <p>OpenAI 提供强大的可靠性和广泛的生态系统支持。费用略高于 Qwen，但表现极其稳定。如果您不在中国大陆，这是一个不错的默认选择。</p>
+        <h3>详细设置步骤</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>创建 OpenAI 账号</strong><br>
+        前往 <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a>，使用邮箱或第三方账号注册。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>添加付款方式</strong><br>
+        导航至 <a href="https://platform.openai.com/settings/organization/billing" target="_blank">设置 → 计费</a> 绑定信用卡。您可以充值低至 $5 起步。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>创建 API 密钥</strong><br>
+        前往 <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a> → 点击 <strong>“Create new secret key”</strong> → 命名为 “FuelFit” → 点击 <strong>“Create key”</strong>。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>复制并保存密钥</strong><br>
+        立即复制该密钥（以 <code>sk-</code> 开头）。您将无法再次查看它。请将其妥善保管。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>输入到 FuelFit</strong><br>
+        打开 FuelFit → <strong>设置 → AI 服务</strong> → 选择 <strong>OpenAI</strong>。Base URL <code>https://api.openai.com/v1</code> and model <code>gpt-4o-mini</code> 已预填 — 如果您想使用其他模型，现在可以修改。粘贴您的 <code>sk-...</code> 密钥，然后点击 <strong>“验证连接”</strong>。
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.45 / year</div>
+          <div class="label">活跃用户估算费用（每日 6 张照片 + 12 次教练调用）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISTRAL SETUP -->
+    <section>
+      <h2>选项 3：Mistral（总部位于欧盟）</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Mistral — <code>mistral-small-latest</code></h3>
+          <span class="badge badge-yellow">总部位于欧盟</span>
+        </div>
+        <p>Mistral 是一家总部位于欧洲的 AI 公司，提供优秀的开源权重模型。如果您需要数据在欧盟司法管辖区内进行处理，或者更喜欢 Mistral 的技术栈，请选择它。</p>
+        <h3>详细设置步骤</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>创建 Mistral 账号</strong><br>
+        前往 <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a> 并注册。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>添加充值</strong><br>
+        导航至 <strong>Billing</strong> 绑定信用卡。Mistral 也提供有限制的免费额度。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>创建 API 密钥</strong><br>
+        前往 <strong>API Keys</strong> → 点击 <strong>“Create new key”</strong> → 立即复制。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>输入到 FuelFit</strong><br>
+        打开 FuelFit → <strong>设置 → AI 服务</strong> → 选择 <strong>Mistral</strong>。Base URL <code>https://api.mistral.ai/v1</code> and model <code>mistral-small-latest</code> 已预填。粘贴您的密钥并点击 <strong>“验证连接”</strong>。
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.60 / year</div>
+          <div class="label">活跃用户估算费用（每日 6 张照片 + 12 次教练调用）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOM PROVIDER -->
+    <section>
+      <h2>选项 4：自定义（任何兼容 OpenAI 的接口）</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Custom Provider</h3>
+          <span class="badge badge-yellow">高级用户</span>
+        </div>
+        <p>如果您想使用未内置的服务商 — Anthropic Claude、Google Gemini、自建 vLLM 服务器、作为多模型网关的 OpenRouter，或任何其他兼容 OpenAI API 的服务，请选择 <strong>“自定义”</strong> 并自行输入接口信息。</p>
+        <div class="warn"><strong>为什么没有内置 Anthropic：</strong>Anthropic 官方的 OpenAI 兼容适配器在处理视觉请求时不够稳定（图像可能会被默默丢弃）。如果您想在食物照片分析中使用 Claude，目前最可靠的途径是通过 <a href="https://openrouter.ai" target="_blank">OpenRouter</a> 路由，并将其作为“自定义”服务商配置。</div>
+        <h3>详细设置步骤</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>获取所选服务商的 API 密钥</strong><br>
+        例如：<a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>、<a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a> 或您的自建服务器。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>查找兼容 OpenAI 的 Base URL</strong><br>
+        大多数服务商都有相关文档。例如 OpenRouter 为 <code>https://openrouter.ai/api/v1</code>；Google 的兼容接口为 <code>https://generativelanguage.googleapis.com/v1beta/openai</code>。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>选择支持视觉的模型</strong><br>
+        FuelFit 需要能够接收图像的多模态模型。OpenRouter 上的示例：<code>anthropic/claude-3.5-sonnet</code>、<code>google/gemini-2.0-flash</code>、<code>openai/gpt-4o-mini</code>。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>输入到 FuelFit</strong><br>
+        打开 FuelFit → <strong>设置 → AI 服务</strong> → 选择 <strong>自定义</strong> → 填入 <strong>名称</strong>、<strong>Base URL</strong>、<strong>模型</strong> 和 <strong>API 密钥</strong> → 点击 <strong>“验证连接”</strong>。
+      </div>
+    </div>
+  
+        <div class="note">费用因具体模型和服务商而异。OpenRouter 在其官网发布了所有模型的 Token 单价表。</div>
+      </div>
+    </section>
+
+    <!-- AI COACH TOGGLE -->
+    <section>
+      <h2>AI 饮食教练开关</h2>
+      <div class="card">
+        <p>FuelFit 的两个 AI 功能具有非常不同的数据流配置，且只有其中一个需要开关：</p>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>食物照片分析是由用户发起的。</strong> 在您主动点击相机按钮拍照之前，没有任何数据会被发给服务商。如果您不拍照，就不会发起任何 API 调用，因此这里无需开关。</li>
+    <li><strong>AI 饮食教练是后台自动运行的。</strong> 当您打开“分析”选项卡或“今天”选项卡上的教练卡片刷新时，FuelFit 会自动将您的每日营养数据发送给服务商以生成针对性的建议。出于隐私原因，有些用户可能不希望进行后台自动调用（即使是发给他们自己选择的服务商）。因此，这个功能配有专门的开关。</li>
+  
+        </ul>
+        <p style="margin-top: 0.75rem;">关闭 AI 饮食教练将保持食物照片分析功能完全正常，但会停止所有其他后台自动 API 调用。Insights 中的教练卡片将静默切换为完全在您设备上计算的内置模板建议。</p>
+
+        <h3>各个功能的数据流差异</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>功能名称</th>
+              <th>功能说明</th>
+              <th>何时调用您的 AI 服务商</th>
+              <th>如何停止调用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>食物照片分析</strong></td>
+              <td>识别食物成分并从拍照中估算营养数值</td>
+              <td>仅在您点击相机按钮拍照时</td>
+              <td>不拍照即可。（您也可以在设置中清除 API 密钥以完全断开集成。）</td>
+            </tr>
+            <tr>
+              <td><strong>AI 饮食教练</strong></td>
+              <td>根据您的餐食记录数据生成教练反馈和每日总结</td>
+              <td>后台自动调用 — 打开分析选项卡、首页卡片刷新及其他环境触发时</td>
+              <td><span class="badge badge-green">关闭开关</span> 设置 → AI 服务 → AI 饮食教练。教练卡片将切换为内置本地模板建议。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>数据透明度</h3>
+        <div class="note">
+          <ul style="margin-left: 1rem;">
+            
+    <li><strong>具体数据流向：</strong></li>
+    <li><strong>食物照片分析：</strong> 仅将照片和简短提示词直接发送至您选择的 AI 服务商。没有其他个人数据。</li>
+    <li><strong>AI 饮食教练（开关开启）：</strong> 仅发送您每日的营养总和数值 — 卡路里、蛋白质、碳水化合物、脂肪、膳食纤维、糖、钠、水分和餐食数量。不发送照片，不发送个人资料，不发送今天以外的历史数据。</li>
+    <li><strong>本地模板教练（开关关闭或 AI 调用失败）：</strong> 建议完全由本地设备根据您的记录数据计算得出。没有任何数据离开您的手机。</li>
+  
+          </ul>
+        </div>
+
+        <h3>“AI” 标签 — 诚实归属</h3>
+        <div class="note">在“分析”选项卡上，教练卡片仅在消息确实来自您的 AI 服务商时才显示“AI”标签。如果消息是根据本地模板生成的（因为开关关闭、没有配置 API 密钥或 AI 调用失败），该标签会消失。因此，您始终能够分辨所读内容是由模型生成的还是由 FuelFit 自身逻辑生成的。</div>
+
+        <h3>如何在设置中禁用 AI 教练</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打开设置</strong><br>
+        点击 FuelFit 底部的“设置”选项卡。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>展开“AI 服务”</strong><br>
+        点击“AI 服务”折叠面板。您将看到服务商配置以及下方的“AI 饮食教练”开关。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>关闭该开关</strong><br>
+        关闭开关后，您将看到基于本地模板的教练建议，且“AI”标签会从卡片中消失。食物照片分析仍可正常工作。
+      </div>
+    </div>
+  
+
+        <h3>在新手引导期间</h3>
+        <p style="color: var(--text2); font-size: 0.9rem;">在新手引导的 AI 设置屏幕中，您有两个选择：</p>
+        <ul style="color: var(--text2); font-size: 0.9rem; margin-left: 1.25rem; margin-bottom: 0.5rem;">
+          
+    <li><strong>配置并验证服务商</strong> — 之后您将在下一个屏幕上看到“AI 饮食教练”开关，默认开启。如果您只想要照片分析，可以在此关闭它。</li>
+    <li><strong>稍后设置</strong> — 将完全跳过“AI 饮食教练”开关屏幕（没有配置 AI 就不需要控制）。开关将自动设为关闭，并且会有横幅提示您已禁用 AI 功能。您随时可以在设置中配置服务商并重新开启。</li>
+  
+        </ul>
+
+        <div class="note"><strong>隐私说明：</strong>当 AI 饮食教练开关关闭时，只有在您主动拍摄食物照片时才会与服务商建立连接。教练或每日总结绝不会向服务商发送任何数据 — 这些都是由完全运行在您设备上的内置模板生成的。</div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2>常见问题解答</h2>
+      <div class="card">
+        
+      <h3>我的 API 密钥安全吗？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">安全。您的 API 密钥在设备本地进行加密存储。FuelFit 没有后端服务器 — 它是一个纯客户端应用。所有 AI 调用都是从您的设备直接发送 to 您选择的服务商。我们永远不会收集或查看您的数据。</p>
+    
+      <h3>更换设备怎么办？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit 在“设置”中提供了内置的“导入/导出”功能。在一台设备上导出数据为文件，然后在另一台设备上导入即可。您的餐食记录、设置以及（加密的）API 密钥会一步完成迁移。</p>
+    
+      <h3>我可以只把 AI 用于照片，而不用于教练吗？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">可以。打开设置 → AI 服务，展开该部分，然后关闭 AI 饮食教练开关。这将禁用 AI 生成的教练建议，同时保持 AI 食物照片分析处于活动状态。分析卡片随后将显示内置模板建议，且“AI”标签将消失。</p>
+    
+      <h3>我可以使用多个服务商吗？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit 一次使用一个主要服务商，但您可以在“自定义”选项中配置其他兼容的 API 并在设置中切换。三个内置服务商（Qwen、OpenAI、Mistral）也会分别记住它们自己的配置，因此只需点按一下即可切换。</p>
+    
+      <h3>如果余额不足会怎样？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">当您尝试分析照片或 AI 饮食教练尝试生成建议时，应用会显示错误。如果教练调用失败，分析卡片会静默退回到模板建议（不会弹出错误提示，且“AI”标签消失以防误导）。给您的服务商账户充值后，下一次 AI 调用就会重新工作。您的本地餐食记录始终被安全保存。</p>
+    
+      <h3>使用 FuelFit 必须要有 API 密钥吗？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">不需要。FuelFit 无需 AI 即可进行手动饮食记录。只有在您需要照片分析或 AI 生成的教练建议时才需要 API 密钥。如果没有配置密钥，所有教练都将使用本地内置模板。</p>
+    
+      <h3>我应该选择哪个服务商？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        <ul style="color: var(--text2); font-size: 0.9rem;">
+          <li><strong>默认：</strong>Qwen <code>qwen3-vl-flash</code> — 最实惠，食物识别强，新账户有免费额度</li>
+          <li><strong>最可靠：</strong>OpenAI <code>gpt-4o-mini</code> — 表现可预测，生态支持广泛</li>
+          <li><strong>总部位于欧盟：</strong>Mistral <code>mistral-small-latest</code></li>
+          <li><strong>其他任何（Claude、Gemini、自建）：</strong>使用“自定义”选项，推荐通过 OpenRouter 路由</li>
+        </ul>
+      </p>
+    
+      <h3>如何切换服务商？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">前往设置 → AI 服务 → 在列表中选择其他服务商 → 输入（或粘贴）该服务商的 API 密钥 → 点击“验证连接”。您的餐食记录和 AI 饮食教练开关设置将完整保留。</p>
+    
+      <h3>为什么内置服务商的模型字段是可以编辑的？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">默认值是基于性价比调优的。如果您想要更高的准确度，可以在验证前将 Qwen 的 qwen3-vl-flash 改为 qwen3-vl-plus，或者在 OpenAI 上改为 gpt-4o。内置服务商的 Base URL 和 Model 字段都是可编辑的，无需切换到“自定义”即可修改。</p>
+    
+      </div>
+    </section>
+
+    <footer>
+      <p>FuelFit AI 服务商配置指南 — 内部参考文档</p>
+      <p style="margin-top: 0.5rem;">反映了 OpenAI/Qwen/Mistral 服务商迁移（2026年6月）后的最终出货行为。所有价格均为编写本文时从官方服务商计费页面核对的估算值。</p>
+    </footer>
+  </div>
+</body>
+</html>

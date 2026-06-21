@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuelFit — KI-Dienstleister Einrichtungsanleitung</title>
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text2: #475569;
+      --muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-light: #fef3c7;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --code-bg: #f1f5f9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --text2: #94a3b8;
+        --muted: #64748b;
+        --border: #334155;
+        --accent: #60a5fa;
+        --accent-light: #1e3a5f;
+        --green: #4ade80;
+        --green-light: #14532d;
+        --yellow: #fbbf24;
+        --yellow-light: #713f12;
+        --red: #f87171;
+        --red-light: #7f1d1d;
+        --code-bg: #1e293b;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text2); font-size: 1.1rem; }
+
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .step-content { flex: 1; }
+
+    code {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: var(--code-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+    .badge-red { background: var(--red-light); color: var(--red); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text2);
+    }
+
+    .note {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .note strong { color: var(--text); }
+
+    .warn {
+      background: var(--yellow-light);
+      border-left: 4px solid var(--yellow);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .warn strong { color: var(--text); }
+
+    .provider-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .provider-header h3 { margin: 0; }
+
+    .cost-est {
+      background: var(--green-light);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .cost-est .big {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .cost-est .label {
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+
+    ol, ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--text2); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 1rem; }
+      h1 { font-size: 1.6rem; }
+      th, td { padding: 0.5rem; font-size: 0.8rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FuelFit — KI-Dienstleister Einrichtungsanleitung</h1>
+      <p class="subtitle">Wie Sie einen API-Schlüssel erhalten und die KI-Lebensmittelfotoanalyse aktivieren</p>
+      <div class="note" style="text-align: left; margin-top: 1rem;">
+        <strong>100% Transparenz: Wir möchten nicht, dass Sie überrascht werden. So verarbeitet FuelFit Ihre Daten:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>Kein Backend-Server</strong> — alle Ihre Daten verbleiben ausschließlich verschlüsselt auf Ihrem Gerät</li>
+    <li><strong>Direkte API-Aufrufe</strong> — KI-Anfragen gehen direkt von Ihrem Gerät an den von Ihnen gewählten Anbieter</li>
+    <li><strong>Explizites Opt-in</strong> — Sie entscheiden sich während des Onboardings für die Aktivierung der KI; Sie können dies auch komplett überspringen</li>
+    <li><strong>Ein Schalter zur Minimierung der Datenfreigabe</strong> — der <strong>KI-Ernährungscoach</strong> kann in den Einstellungen deaktiviert werden. Wenn er ausgeschaltet ist, wird Ihr Anbieter nur kontaktiert, wenn Sie aktiv ein Lebensmittelfoto aufnehmen – Ihre täglichen Ernährungsdaten werden niemals ungefragt für das Coaching gesendet. Die Fotoanalyse selbst läuft nur, wenn Sie sich für ein Foto entscheiden, und ist somit vom Benutzer initiiert.</li>
+    <li><strong>Ehrliches KI-Label</strong> — wenn das Coaching auf ein integriertes Template zurückgreift (Schalter aus, kein Schlüssel oder KI-Fehler), verschwindet das "KI"-Badge, sodass Sie immer wissen, was tatsächlich generiert wurde</li>
+    <li><strong>Export/Import</strong> — Ihre Daten sind über Einstellungen → Export/Import portabel</li>
+  
+        </ul>
+      </div>
+    </header>
+
+    <!-- COST OVERVIEW -->
+    <section>
+      <h2>Wie viel kostet es?</h2>
+
+      <div class="card">
+        <p>FuelFit nutzt KI, um Ihre Lebensmittelfotos zu analysieren. Sie bringen Ihren eigenen API-Schlüssel mit (BYOK) — es gibt keine Abonnementgebühr von FuelFit selbst. Die Kosten hängen vollständig davon ab, welchen Anbieter Sie wählen und wie oft Sie Mahlzeiten protokollieren.</p>
+
+        <h3>Geschätzte jährliche Kosten (Aktiver Nutzer)</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">Basierend auf ca. 6 Fotos/Tag (vollständige Protokolle) + 12 Coach-Aufrufen/Tag (Cache-Invalidierungen), 365 Tage/Jahr</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Anbieter</th>
+              <th>Standardmodell</th>
+              <th>Geschätzte jährliche Kosten</th>
+              <th>Hinweise</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen (Alibaba)</strong></td>
+              <td><code>qwen3-vl-flash</code></td>
+              <td><strong>~$0.69 / year</strong></td>
+              <td><span class="badge badge-green">Günstigster · Standard</span> Starke Essenserkennung; ideal für Nutzer in China</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td><code>gpt-4o-mini</code></td>
+              <td><strong>~$1.45 / year</strong></td>
+              <td><span class="badge badge-green">Am zuverlässigsten</span> Weit verbreitet, vorhersehbares Verhalten</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong></td>
+              <td><code>mistral-small-latest</code></td>
+              <td><strong>~$1.60 / year</strong></td>
+              <td><span class="badge badge-yellow">In der EU ansässig</span> Open-Weights-Anbieter, gute Datenschutzhaltung</td>
+            </tr>
+            <tr>
+              <td><strong>Custom</strong></td>
+              <td>Your choice</td>
+              <td>Varies</td>
+              <td><span class="badge badge-yellow">Power-User</span> Jedes OpenAI-kompatible Endpunkt — OpenRouter, Claude über OpenRouter, selbstgehostet usw.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Token-Nutzung & Preisberechnung (Wie wir das berechnet haben)</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">Hier ist die genaue Token-Aufschlüsselung, die vom Code der App verwendet wird, um mit Ihrem KI-Anbieter zu kommunizieren. Wir berechnen dies explizit, damit Sie nie überrascht werden:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Hinweise</th>
+              <th>Avg. Input Tokens</th>
+              <th>Avg. Output Tokens</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Lebensmittelfoto-Analyse</strong></td>
+              <td>
+      • System-Prompt: ~500 Tokens (regelt Formatierung und Ernährungsregeln)<br>
+      • Benutzer-Text-Prompt: ~20 Tokens ("food identifizieren...")<br>
+      • Bild-Tokens:
+        <ul style="margin-top: 0.25rem; margin-left: 1rem; font-size: 0.85rem;">
+          <li><strong>OpenAI:</strong> 765 Tokens (hochauflösender Kachelmodus für typisch verkleinertes 768x1024 Foto)</li>
+          <li><strong>Qwen:</strong> ~1.000 Tokens (Patch-basiert: 1 Token pro 28x28px Bereich)</li>
+          <li><strong>Mistral:</strong> ~1.200 Tokens (visuelle Tokenisierung)</li>
+        </ul>
+    </td>
+              <td>
+                • OpenAI: <strong>~1,285</strong><br>
+                • Qwen: <strong>~1,520</strong><br>
+                • Mistral: <strong>~1,720</strong>
+              </td>
+              <td><strong>~250</strong> tokens</td>
+            </tr>
+            <tr>
+              <td><strong>KI-Ernährungscoach-Aufruf</strong></td>
+              <td>
+      • System-Prompt-Skelett: ~500 Tokens (Regeln zu Tonfall, Einschränkungen, JSON-Format)<br>
+      • Benutzer-Kontext: ~250 Tokens (aktuelle Uhrzeit, Tageswerte, Liste der heutigen Mahlzeiten, Fastenfenster, Ziele)
+    </td>
+              <td><strong>~750</strong> tokens</td>
+              <td><strong>~80</strong> tokens</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>API-Tarife & Berechnungen (6 Fotos + 12 Coach-Aufrufe / Tag)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Anbieter / Model</th>
+              <th>API-Tarife (Eingabe/Ausgabe pro 1 Mio.)</th>
+              <th>Kosten pro Foto</th>
+              <th>Kosten pro Coach-Aufruf</th>
+              <th>Tägliche Kosten</th>
+              <th>Jährliche Kosten (365 Tage)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen</strong> (<code>qwen3-vl-flash</code>)</td>
+              <td>$0.05 / $0.40</td>
+              <td>$0.000176</td>
+              <td>$0.000070</td>
+              <td>$0.001890</td>
+              <td><strong>~$0.69 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong> (<code>gpt-4o-mini</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000343</td>
+              <td>$0.000161</td>
+              <td>$0.003983</td>
+              <td><strong>~$1.45 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong> (<code>mistral-small-latest</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000408</td>
+              <td>$0.000161</td>
+              <td>$0.004374</td>
+              <td><strong>~$1.60 / year</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note"><strong>Warum ca. 12 Coach-Aufrufe pro Tag?</strong> Die App speichert Coach-Antworten lokal. Sie ruft die API nicht auf, wenn Ihre erfassten Daten identisch bleiben. Das Protokollieren einer neuen Mahlzeit, das Aktualisieren von Wasser oder Stundenänderungen machen den Cache jedoch sofort ungültig. Ein aktiver Benutzer, der 6 Fotos und 4 Wasseraktualisierungen protokolliert sowie die App zu 2 neuen Stunden öffnet, führt etwa 12 Coach-Aufrufe durch.</div>
+        <div class="note"><strong>Sie können das Modell jederzeit ändern.</strong> Die oben genannten Standardwerte sind praktische Einstiegspunkte, keine Mauern. Wenn Sie beim Onboarding oder in den Einstellungen einen integrierten Anbieter auswählen, werden die Felder für Basis-URL und Modell vorausgefüllt und editierbar angezeigt — wechseln Sie <code>qwen3-vl-flash</code> zu <code>qwen3-vl-plus</code> für höhere Genauigkeit oder zu <code>gpt-4o</code> bei OpenAI, bevor Sie die Verbindung überprüfen.</div>
+
+        <div class="warn">
+          <strong>Haftungsausschluss & Abrechnungssicherheit:</strong>
+          <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+            
+    <li><strong>Preiskontrolle:</strong> Alle API-Tarife, Token-Mengen und Kostenschätzungen dienen nur als Referenz. KI-Anbieter (OpenAI, Alibaba Cloud, Mistral) kontrollieren ihre eigene Preisgestaltung und können ihre Tarife jederzeit ändern. FuelFit erhebt keine Abonnementgebühren, verarbeitet keine Abrechnungen und hat keine Kontrolle über API-Gebühren.</li>
+    <li><strong>Abrechnungslimits:</strong> Wir empfehlen dringend, auf dem Entwickler-Dashboard Ihres KI-Anbieters strenge Abrechnungslimits (Nutzungsobergrenzen) festzulegen, um unerwartete Gebühren bei übermäßiger App-Nutzung oder Key-Verlust zu verhindern.</li>
+    <li><strong>Medizinischer Haftungsausschluss:</strong> FuelFit und sein KI-Coach dienen nur zu Informations- und Bildungszwecken. Sie stellen keine medizinische Beratung, Ernährungsdiagnose oder professionelle Behandlung dar. Konsultieren Sie immer eine qualifizierte medizinische Fachkraft, bevor Sie wesentliche Änderungen an Ihrer Ernährung oder Fitnessroutine vornehmen.</li>
+  
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QWEN SETUP -->
+    <section>
+      <h2>Option 1: Qwen / Alibaba Cloud (Standard — am günstigsten)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Qwen (DashScope) — <code>qwen3-vl-flash</code></h3>
+          <span class="badge badge-green">Günstigster · Standard</span>
+        </div>
+        <p>Qwen ist FuelFits Standard-Anbieter. Das <code>qwen3-vl-flash</code> Modell ist das günstigste verfügbare vision-Modell und erkennt Lebensmittel extrem gut (auch asiatische Gerichte). Neue Konten bei Alibaba Cloud erhalten kostenlose Test-Credits.</p>
+        <h3>Schritt-für-Schritt-Anleitung</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Erstellen Sie ein Alibaba Cloud-Konto</strong><br>
+        Gehen Sie zu <a href="https://account.alibabacloud.com/register" target="_blank">account.alibabacloud.com/register</a> (international) oder <a href="https://account.aliyun.com" target="_blank">account.aliyun.com</a> (China) und registrieren Sie sich.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Aktivieren Sie das Model Studio (百炼)</strong><br>
+        Gehen Sie zu <a href="https://bailian.console.aliyun.com" target="_blank">bailian.console.aliyun.com</a> und aktivieren Sie den Dienst. Neue Konten erhalten <strong>kostenlose Credits</strong> (1 Million Tokens) — ausreichend für Monate normaler Nutzung.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Erstellen Sie einen API-Schlüssel</strong><br>
+        In der Model Studio-Konsole → <strong>API Key Management</strong> → klicken Sie auf <strong>"Create API Key"</strong> → kopieren Sie den Schlüssel (beginnt mit <code>sk-</code>).
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>In FuelFit eingeben</strong><br>
+        Öffnen Sie FuelFit → <strong>Einstellungen → KI-Dienste</strong> → stellen Sie sicher, dass <strong>Qwen</strong> ausgewählt ist (es ist die Voreinstellung). Basis-URL und Modell sind bereits vorausgefüllt — ändern Sie <code>qwen3-vl-flash</code> auf <code>qwen3-vl-plus</code> für eine höhere Genauigkeit. Fügen Sie Ihren Schlüssel ein und tippen Sie auf <strong>Verbindung überprüfen</strong>.
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$0.69 / year</div>
+          <div class="label">Geschätzte Kosten für aktive Nutzer (6 Fotos + 12 Coach-Aufrufe/Tag)</div>
+        </div>
+        <div class="note"><strong>Kostenlose Stufe:</strong> Neue Konten erhalten 1 Million kostenlose Tokens — ausreichend für eine monatelange Nutzung. Das <code>qwen3-vl-flash</code>-Modell ist speziell auf das Verständnis von Bildern ausgelegt und das günstigste verfügbare Vision-Modell.</div>
+      </div>
+    </section>
+
+    <!-- OPENAI SETUP -->
+    <section>
+      <h2>Option 2: OpenAI (Am zuverlässigsten)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>OpenAI — <code>gpt-4o-mini</code></h3>
+          <span class="badge badge-green">Am zuverlässigsten</span>
+        </div>
+        <p>OpenAI bietet starke Zuverlässigkeit und breite System-Kompatibilität. Etwas teurer als Qwen, aber extrem stabiles Verhalten — ein solider Standard, wenn Sie nicht in China sind.</p>
+        <h3>Schritt-für-Schritt-Anleitung</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Erstellen Sie ein OpenAI-Konto</strong><br>
+        Gehen Sie zu <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a> und registrieren Sie sich.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Fügen Sie eine Zahlungsmethode hinzu</strong><br>
+        Navigieren Sie zu <a href="https://platform.openai.com/settings/organization/billing" target="_blank">Settings → Billing</a> und fügen Sie eine Kreditkarte hinzu. Sie können ab $5 starten.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Erstellen Sie einen API-Schlüssel</strong><br>
+        Gehen Sie zu <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a> → klicken Sie auf <strong>"Create new secret key"</strong> → Name eingeben → klicken Sie auf <strong>"Create key"</strong>.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>Schlüssel kopieren und sichern</strong><br>
+        Kopieren Sie den Schlüssel sofort (er beginnt mit <code>sk-</code>). Sie können ihn später nicht mehr ansehen.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>In FuelFit eingeben</strong><br>
+        Öffnen Sie FuelFit → <strong>Einstellungen → KI-Dienste</strong> → wählen Sie <strong>OpenAI</strong>. Basis-URL <code>https://api.openai.com/v1</code> und Modell <code>gpt-4o-mini</code> sind vorausgefüllt. Fügen Sie Ihren Schlüssel ein und tippen Sie auf <strong>Verbindung überprüfen</strong>.
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.45 / year</div>
+          <div class="label">Geschätzte Kosten für aktive Nutzer (6 Fotos + 12 Coach-Aufrufe/Tag)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISTRAL SETUP -->
+    <section>
+      <h2>Option 3: Mistral (In der EU ansässig)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Mistral — <code>mistral-small-latest</code></h3>
+          <span class="badge badge-yellow">In der EU ansässig</span>
+        </div>
+        <p>Mistral ist ein europäisches KI-Unternehmen, das Open-Weights-Modelle bereitstellt. Wählen Sie diesen Anbieter, wenn Sie eine Datenverarbeitung im EU-Raum bevorzugen.</p>
+        <h3>Schritt-für-Schritt-Anleitung</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Erstellen Sie ein Mistral-Konto</strong><br>
+        Gehen Sie zu <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a> und registrieren Sie sich.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Guthaben aufladen</strong><br>
+        Navigieren Sie zu <strong>Billing</strong> und fügen Sie eine Kreditkarte hinzu. Mistral bietet auch eine kostenlose Stufe mit Limitierungen an.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Erstellen Sie einen API-Schlüssel</strong><br>
+        Gehen Sie zu <strong>API Keys</strong> → klicken Sie auf <strong>"Create new key"</strong> → kopieren Sie ihn sofort.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>In FuelFit eingeben</strong><br>
+        Öffnen Sie FuelFit → <strong>Einstellungen → KI-Dienste</strong> → wählen Sie <strong>Mistral</strong>. Basis-URL <code>https://api.mistral.ai/v1</code> und Modell <code>mistral-small-latest</code> sind vorausgefüllt. Fügen Sie Ihren Schlüssel ein und tippen Sie auf <strong>Verbindung überprüfen</strong>.
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.60 / year</div>
+          <div class="label">Geschätzte Kosten für aktive Nutzer (6 Fotos + 12 Coach-Aufrufe/Tag)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOM PROVIDER -->
+    <section>
+      <h2>Option 4: Custom (Jeder OpenAI-kompatible Endpunkt)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Custom Provider</h3>
+          <span class="badge badge-yellow">Power-User</span>
+        </div>
+        <p>Wenn Sie einen anderen Anbieter nutzen möchten — wie Anthropic Claude, Google Gemini, einen selbstgehosteten vLLM-Server, OpenRouter oder eine andere OpenAI-kompatible API — wählen Sie <strong>Custom</strong>.</p>
+        <div class="warn"><strong>Warum Anthropic nicht integriert ist:</strong> Der offizielle OpenAI-kompatible Adapter von Anthropic war bei Bildanforderungen unzuverlässig (Bilder wurden stillschweigend verworfen). Wenn Sie Claude für Essensfotos nutzen möchten, leiten Sie Anfragen stattdessen über <a href="https://openrouter.ai" target="_blank">OpenRouter</a> als Custom-Anbieter um.</div>
+        <h3>Schritt-für-Schritt-Anleitung</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>API-Schlüssel holen</strong><br>
+        Zum Beispiel von <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>, <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a> oder Ihrem eigenen Server.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>OpenAI-kompatible Basis-URL ermitteln</strong><br>
+        Beispiele: OpenRouter ist <code>https://openrouter.ai/api/v1</code>; Google ist <code>https://generativelanguage.googleapis.com/v1beta/openai</code>.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Modell mit Bildunterstützung wählen</strong><br>
+        FuelFit benötigt ein multimodales Modell. Beispiele: <code>anthropic/claude-3.5-sonnet</code>, <code>google/gemini-2.0-flash</code>, <code>openai/gpt-4o-mini</code>.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>In FuelFit eingeben</strong><br>
+        Öffnen Sie FuelFit → <strong>Einstellungen → KI-Dienste</strong> → wählen Sie <strong>Custom</strong> → geben Sie Name, Basis-URL, Modell und API-Schlüssel ein → tippen Sie auf <strong>Verbindung überprüfen</strong>.
+      </div>
+    </div>
+  
+        <div class="note">Die Kosten variieren je nach Modell und Anbieter stark. OpenRouter veröffentlicht eine Token-Preistabelle für jedes Modell.</div>
+      </div>
+    </section>
+
+    <!-- AI COACH TOGGLE -->
+    <section>
+      <h2>KI-Ernährungscoach-Schalter</h2>
+      <div class="card">
+        <p>Die beiden KI-Funktionen in FuelFit haben sehr unterschiedliche Datenflussprofile, und nur eine davon benötigt einen Schalter:</p>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>Fotoanalyse ist benutzerinitiiert.</strong> Es wird nichts an Ihren Anbieter gesendet, bis Sie auf die Kamera-Schaltfläche tippen. Wenn Sie kein Foto machen, erfolgt kein API-Aufruf. Es gibt nichts zu deaktivieren.</li>
+    <li><strong>Der KI-Ernährungscoach läuft im Hintergrund.</strong> Wenn Sie den Insights-Tab öffnen oder die Coach-Karte auf dem Startbildschirm aktualisiert wird, sendet die App Ihre tägliche Nährstoffzusammenfassung an Ihren Anbieter, um eine Nachricht zu generieren. Manche Benutzer möchten diese Hintergrundaufrufe aus Datenschutzgründen verhindern. Deshalb hat diese Funktion einen Schalter.</li>
+  
+        </ul>
+        <p style="margin-top: 0.75rem;">Das Ausschalten des KI-Ernährungscoaches lässt die Fotoanalyse voll funktionsfähig, stoppt jedoch alle automatischen Hintergrund-API-Aufrufe. Die Coach-Karte wechselt stattdessen lautlos zu integrierten Tipps auf Basis von Vorlagen, die vollständig auf Ihrem Gerät berechnet werden.</p>
+
+        <h3>Was jede Funktion tut</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Was es tut</th>
+              <th>Wann der Anbieter kontaktiert wird</th>
+              <th>Wie die Aufrufe gestoppt werden</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Lebensmittelfoto-Analyse</strong></td>
+              <td>Identifiziert Lebensmittel und schätzt Nährwerte anhand von Fotos, die Sie aufnehmen</td>
+              <td>Nur wenn Sie aktiv auf die Kamera-Schaltfläche tippen</td>
+              <td>Nehmen Sie keine Fotos auf (oder löschen Sie Ihren API-Schlüssel).</td>
+            </tr>
+            <tr>
+              <td><strong>KI-Ernährungscoach</strong></td>
+              <td>Generiert Coaching-Nachrichten und tägliche Zusammenfassungen aus Ihren Daten</td>
+              <td>Automatisch — beim Öffnen von Insights, beim Aktualisieren der Home-Coach-Karte und bei anderen Auslösern</td>
+              <td><span class="badge badge-green">Schalter aus</span> Einstellungen → KI-Dienste → KI-Ernährungscoach. Die Karte wechselt zu lokalen Vorlagen-Tipps.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Daten-Transparenz</h3>
+        <div class="note">
+          <ul style="margin-left: 1rem;">
+            
+    <li><strong>Welche Daten wohin gesendet werden:</strong></li>
+    <li><strong>Fotoanalyse:</strong> Das Foto sowie eine kurze Texteingabe werden direkt an den von Ihnen gewählten KI-Anbieter gesendet. Sonst nichts.</li>
+    <li><strong>KI-Ernährungscoach (Schalter AN):</strong> Nur Ihre täglichen Nährwertsummen werden gesendet — Kalorien, Eiweiß, Kohlenhydrate, Fett, Ballaststoffe, Zucker, Natrium, Wasser, Anzahl der Mahlzeiten. Keine Fotos, keine Profil-Details, keine historischen Daten über den heutigen Tag hinaus.</li>
+    <li><strong>Vorlagen-Coaching (Schalter AUS oder KI-Fehler):</strong> Die Nachrichten werden vollständig auf dem Gerät aus Ihren Daten berechnet. Nichts verlässt Ihr Telefon.</li>
+  
+          </ul>
+        </div>
+
+        <h3>Das "KI"-Badge — Ehrliche Kennzeichnung</h3>
+        <div class="note">Auf dem Insights-Tab zeigt die Coach-Karte nur dann ein kleines "KI"-Label an, wenn die Nachricht tatsächlich von Ihrem KI-Anbieter stammte. Wenn die Nachricht aus lokalen Vorlagen erstellt wurde – weil der Schalter aus ist, Sie keinen API-Schlüssel haben oder der KI-Aufruf fehlgeschlagen ist –, verschwindet das Badge. So wissen Sie immer, ob das, was Sie lesen, von einem Modell oder von der Logik von FuelFit generiert wurde.</div>
+
+        <h3>Wie Sie den KI-Coach deaktivieren (Einstellungen)</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Einstellungen öffnen</strong><br>
+        Tippen Sie in FuelFit auf den Tab Einstellungen.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Erweitern Sie "KI-Dienste"</strong><br>
+        Tippen Sie auf das Akkordeon. Sie sehen Ihre Anbieterkonfiguration und darunter den Schalter für den KI-Ernährungscoach.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Schalter ausschalten</strong><br>
+        Bei ausgeschaltetem Schalter sehen Sie lokale, vorlagenbasierte Coaching-Tipps statt KI-generierter, und das "KI"-Badge verschwindet von der Insights-Coach-Karte. Die Fotoanalyse funktioniert weiterhin normal.
+      </div>
+    </div>
+  
+
+        <h3>Während des Onboardings</h3>
+        <p style="color: var(--text2); font-size: 0.9rem;">Während des AI-Setup-Bildschirms beim Onboarding haben Sie zwei Möglichkeiten:</p>
+        <ul style="color: var(--text2); font-size: 0.9rem; margin-left: 1.25rem; margin-bottom: 0.5rem;">
+          
+    <li><strong>Einen Anbieter konfigurieren und überprüfen</strong> — Sie sehen dann auf dem nächsten Bildschirm den KI-Ernährungscoach-Schalter, der standardmäßig auf EIN steht. Sie können ihn dort ausschalten, wenn Sie nur die Fotoanalyse wünschen.</li>
+    <li><strong>Vorläufig überspringen</strong> — der Bildschirm für den KI-Ernährungscoach-Schalter wird komplett übersprungen. Der Schalter wird automatisch auf AUS gesetzt und ein Banner erinnert Sie daran, dass die KI-Funktionen deaktiviert sind.</li>
+  
+        </ul>
+
+        <div class="note"><strong>Datenschutz-Hinweis:</strong> Wenn der KI-Ernährungscoach-Schalter ausgeschaltet ist, wird Ihr Anbieter nur kontaktiert, wenn Sie aktiv ein Lebensmittelfoto aufnehmen. Es werden keine Daten für das Coaching oder die täglichen Zusammenfassungen gesendet — diese werden durch integrierte Vorlagen erstellt, die vollständig auf Ihrem Gerät ausgeführt werden.</div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2>Häufig gestellte Fragen (FAQ)</h2>
+      <div class="card">
+        
+      <h3>Ist mein API-Schlüssel sicher?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Ja. Ihr API-Schlüssel wird lokal verschlüsselt gespeichert. FuelFit hat keinen Backend-Server — es ist eine reine Client-Side-App. Alle KI-Aufrufe gehen direkt von Ihrem Gerät an den von Ihnen gewählten Anbieter. Wir erfassen oder sehen Ihre Daten niemals.</p>
+    
+      <h3>Was ist bei einem Gerätewechsel?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit enthält eine integrierte Export/Import-Funktion in den Einstellungen. Exportieren Sie Ihre Daten in eine Datei und importieren Sie sie auf Ihrem neuen Gerät. Ihre Mahlzeiten, Einstellungen und (verschlüsselten) API-Schlüssel werden in einem Schritt übertragen.</p>
+    
+      <h3>Kann ich KI nur für Fotos verwenden, nicht für das Coaching?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Ja. Öffnen Sie Einstellungen → KI-Dienste und schalten Sie den KI-Ernährungscoach aus. Dies deaktiviert die KI-generierten Coaching-Nachrichten, während die KI-Fotoanalyse aktiv bleibt.</p>
+    
+      <h3>Kann ich mehrere Anbieter nutzen?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit verwendet jeweils einen Hauptanbieter, aber Sie können mehrere benutzerdefinierte Anbieter konfigurieren und in den Einstellungen wechseln. Die drei integrierten Anbieter (Qwen, OpenAI, Mistral) merken sich ebenfalls ihre eigene Konfiguration.</p>
+    
+      <h3>Was passiert, wenn mein Guthaben aufgebraucht ist?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Die App zeigt eine Fehlermeldung an, wenn Sie versuchen, ein Foto zu analysieren oder wenn der Coach eine Nachricht generieren möchte. Wenn der Coach-Aufruf fehlschlägt, wechselt die Insights-Karte lautlos zu einem Vorlagen-Tipp (kein Fehler-Toast — und das "KI"-Badge verschwindet). Laden Sie Ihr Guthaben auf und der nächste Aufruf funktioniert wieder. Ihr Mahlzeitenverlauf wird lokal gespeichert.</p>
+    
+      <h3>Benötige ich einen API-Schlüssel, um FuelFit zu nutzen?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Nein. FuelFit funktioniert ohne KI für die manuelle Protokollierung. Sie benötigen nur dann einen API-Schlüssel, wenn Sie die Fotoanalyse oder KI-generiertes Coaching wünschen.</p>
+    
+      <h3>Welchen Anbieter soll ich wählen?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        <ul style="color: var(--text2); font-size: 0.9rem;">
+          <li><strong>Standard:</strong> Qwen <code>qwen3-vl-flash</code> — am günstigsten, starke Essenserkennung</li>
+          <li><strong>Am zuverlässigsten:</strong> OpenAI <code>gpt-4o-mini</code> — berechenbares Verhalten, breiter Support</li>
+          <li><strong>EU-basiert:</strong> Mistral <code>mistral-small-latest</code></li>
+          <li><strong>Sonstige (Claude, Gemini, selbstgehostet):</strong> Custom-Option, am besten über OpenRouter</li>
+        </ul>
+      </p>
+    
+      <h3>Wie wechsle ich den Anbieter?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Gehen Sie zu Einstellungen → KI-Dienste → Tippen Sie auf einen anderen Anbieter → Geben Sie den API-Schlüssel ein → Tippen Sie auf Verbindung überprüfen.</p>
+    
+      <h3>Warum ist das Modell-Feld für integrierte Anbieter editierbar?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Die Standardeinstellungen sind auf Kostenoptimierung ausgelegt. Wenn Sie eine höhere Genauigkeit wünschen, bevorzugen Sie möglicherweise qwen3-vl-plus bei Qwen oder gpt-4o bei OpenAI. Die Felder sind editierbar.</p>
+    
+      </div>
+    </section>
+
+    <footer>
+      <p>FuelFit KI-Anbieter-Leitfaden — internes Referenzdokument</p>
+      <p style="margin-top: 0.5rem;">Spiegelt das Verhalten der OpenAI/Qwen/Mistral-Anbieter-Migration (Juni 2026) wider. Preise sind Schätzungen, die zum Zeitpunkt der Erstellung mit den offiziellen Abrechnungsseiten der Anbieter abgeglichen wurden.</p>
+    </footer>
+  </div>
+</body>
+</html>

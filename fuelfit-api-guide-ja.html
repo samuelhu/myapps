@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuelFit — AIプロバイダー設定ガイド</title>
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text2: #475569;
+      --muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-light: #fef3c7;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --code-bg: #f1f5f9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --text2: #94a3b8;
+        --muted: #64748b;
+        --border: #334155;
+        --accent: #60a5fa;
+        --accent-light: #1e3a5f;
+        --green: #4ade80;
+        --green-light: #14532d;
+        --yellow: #fbbf24;
+        --yellow-light: #713f12;
+        --red: #f87171;
+        --red-light: #7f1d1d;
+        --code-bg: #1e293b;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text2); font-size: 1.1rem; }
+
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .step-content { flex: 1; }
+
+    code {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: var(--code-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+    .badge-red { background: var(--red-light); color: var(--red); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text2);
+    }
+
+    .note {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .note strong { color: var(--text); }
+
+    .warn {
+      background: var(--yellow-light);
+      border-left: 4px solid var(--yellow);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .warn strong { color: var(--text); }
+
+    .provider-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .provider-header h3 { margin: 0; }
+
+    .cost-est {
+      background: var(--green-light);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .cost-est .big {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .cost-est .label {
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+
+    ol, ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--text2); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 1rem; }
+      h1 { font-size: 1.6rem; }
+      th, td { padding: 0.5rem; font-size: 0.8rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FuelFit — AIプロバイダー設定ガイド</h1>
+      <p class="subtitle">APIキーを取得し、AI食事写真分析を有効にする方法</p>
+      <div class="note" style="text-align: left; margin-top: 1rem;">
+        <strong>100%の透明性: 突然の課金などで驚かせたくはありません。FuelFitはあなたのデータを以下のように扱います：</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>バックエンドサーバーなし</strong> — すべてのデータは暗号化され、デバイス内のみに保存されます</li>
+    <li><strong>直接APIを呼び出し</strong> — AIリクエストは、デバイスから選択したプロバイダーへ直接送信されます</li>
+    <li><strong>明確なオプトイン</strong> — オンボーディング時にAIを有効にするか選択でき、スキップすることも可能です</li>
+    <li><strong>データ露出を最小化するスイッチ</strong> — 設定で<strong>AI食事コーチ</strong>を無効にできます。無効にすると、写真の撮影時のみプロバイダーにアクセスし、毎日の栄養データがコーチングメッセージの生成目的でバックグラウンド送信されることはありません。写真分析自体は写真を撮影した時のみ実行されるため、ユーザー発信の設計となっています。</li>
+    <li><strong>誠実なAIラベル</strong> — ローカルのテンプレート機能に切り替わった場合（スイッチがオフ、APIキー未設定、AIエラー時）、カードから「AI」バッジが消え、どれが実際に生成されたアドバイスかを常に識別できます</li>
+    <li><strong>エクスポート/インポート</strong> — 設定 → エクスポート/インポートから、データを簡単に移行できます</li>
+  
+        </ul>
+      </div>
+    </header>
+
+    <!-- COST OVERVIEW -->
+    <section>
+      <h2>料金はいくらかかりますか？</h2>
+
+      <div class="card">
+        <p>FuelFitは食事写真の分析にAIを使用します。お客様自身のAPIキーを設定していただく形式（BYOK）をとっており、FuelFit自体へのサブスクリプション料金は一切不要です。費用は選択するプロバイダーと食事の記録頻度によって決定されます。</p>
+
+        <h3>想定年間費用（アクティブユーザー）</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">毎日約6枚の写真撮影（包括的なログ） ＋ 毎日12回のコーチ呼び出し（キャッシュ無効化）を365日行った場合の計算</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>プロバイダー</th>
+              <th>デフォルトモデル</th>
+              <th>想定年間費用</th>
+              <th>備考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen (Alibaba)</strong></td>
+              <td><code>qwen3-vl-flash</code></td>
+              <td><strong>~$0.69 / year</strong></td>
+              <td><span class="badge badge-green">最安値 · デフォルト</span> 食べ物の識別能力が非常に高い；日本・アジア地域や中国国内ユーザーに最適</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td><code>gpt-4o-mini</code></td>
+              <td><strong>~$1.45 / year</strong></td>
+              <td><span class="badge badge-green">最も信頼性が高い</span> エコシステムのサポートが広く、極めて安定した挙動</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong></td>
+              <td><code>mistral-small-latest</code></td>
+              <td><strong>~$1.60 / year</strong></td>
+              <td><span class="badge badge-yellow">EU拠点</span> オープンウェイトプロバイダー、優れたプライバシー体制</td>
+            </tr>
+            <tr>
+              <td><strong>Custom</strong></td>
+              <td>Your choice</td>
+              <td>Varies</td>
+              <td><span class="badge badge-yellow">パワーユーザー向け</span> OpenAI互換のすべてのエンドポイントに対応 — OpenRouterやOpenRouter経由のClaude、ローカルサーバーなど</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>トークン使用量と料金計算式（算出方法）</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">アプリコードがAIプロバイダーと通信する際、実際に消費されるトークン数の内訳は以下の通りです。不明瞭な課金を防ぐために明記しています：</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>機能</th>
+              <th>備考</th>
+              <th>平均入力トークン</th>
+              <th>平均出力トークン</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>食事写真分析</strong></td>
+              <td>
+      • システムプロンプト: 約500トークン（出力フォーマットと栄養の計算ルール）<br>
+      • ユーザーテキスト: 約20トークン（「食べ物を認識して...」）<br>
+      • 画像トークン:
+        <ul style="margin-top: 0.25rem; margin-left: 1rem; font-size: 0.85rem;">
+          <li><strong>OpenAI:</strong> 765トークン（リサイズされた標準的な768x1024画像の高解像度タイルモード）</li>
+          <li><strong>Qwen:</strong> 約1,000トークン（パッチベース：28x28pxあたり1トークン）</li>
+          <li><strong>Mistral:</strong> 約1,200トークン（ビジュアルトークン化）</li>
+        </ul>
+    </td>
+              <td>
+                • OpenAI: <strong>~1,285</strong><br>
+                • Qwen: <strong>~1,520</strong><br>
+                • Mistral: <strong>~1,720</strong>
+              </td>
+              <td><strong>~250</strong> tokens</td>
+            </tr>
+            <tr>
+              <td><strong>AI食事コーチ呼び出し</strong></td>
+              <td>
+      • システムプロンプト骨格: 約500トークン（トーン、制約、JSON出力のルール）<br>
+      • ユーザーコンテキスト: 約250トークン（現在時刻、当日の摂取合計、今日の食事リスト、断食窓、目標値）
+    </td>
+              <td><strong>~750</strong> tokens</td>
+              <td><strong>~80</strong> tokens</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>API料金と計算（食事写真6回 ＋ コーチ呼び出し12回 / 日）</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>プロバイダー / Model</th>
+              <th>API料金（百万トークンあたり）</th>
+              <th>写真1枚あたりの費用</th>
+              <th>コーチ1回あたりの費用</th>
+              <th>日ごとの費用</th>
+              <th>年間費用（365日換算）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen</strong> (<code>qwen3-vl-flash</code>)</td>
+              <td>$0.05 / $0.40</td>
+              <td>$0.000176</td>
+              <td>$0.000070</td>
+              <td>$0.001890</td>
+              <td><strong>~$0.69 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong> (<code>gpt-4o-mini</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000343</td>
+              <td>$0.000161</td>
+              <td>$0.003983</td>
+              <td><strong>~$1.45 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong> (<code>mistral-small-latest</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000408</td>
+              <td>$0.000161</td>
+              <td>$0.004374</td>
+              <td><strong>~$1.60 / year</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note"><strong>なぜ毎日約12回のコーチ呼び出しが発生するのですか？</strong> アプリはコーチの応答をローカルにキャッシュします。記録データが変わらなければAPIは呼び出されません。しかし、新しい食事の追加、水分の変更、または時間経過によってキャッシュは無効化されます。写真6回、水分記録4回、新たな時間にアプリを2回起動した場合、アクティブユーザーで1日約12回の呼び出しが発生します。</div>
+        <div class="note"><strong>モデルはいつでも変更可能です。</strong> 上記の初期設定モデルは最適な選択肢ですが、強制ではありません。オンボーディングや設定画面で組み込みプロバイダーを選択すると、Base URLとModelフィールドにプリセット値が表示され、編集可能です。検証前にQwenで<code>qwen3-vl-plus</code>に変更したり、OpenAIで<code>gpt-4o</code>にアップグレードできます。</div>
+
+        <div class="warn">
+          <strong>免責事項および請求の安全性について:</strong>
+          <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+            
+    <li><strong>料金管理:</strong> すべてのAPI料金、トークン数、および見積もり費用は参考値です。AIプロバイダー（OpenAI、Alibaba Cloud、Mistral）は自社の価格体系を管理しており、予告なく料金を変更する場合があります。FuelFitは課金処理を行わず、手数料も徴収しません。</li>
+    <li><strong>利用上限設定:</strong> APIキーの漏洩や過剰な利用による予期せぬ請求を防ぐため、各AIプロバイダーの開発者コンソールで**月額利用制限（ハードリミット）**を設定することを強くお勧めします。</li>
+    <li><strong>医療に関する免責事項:</strong> FuelFitおよびAI食事コーチのアドバイスは、情報提供および教育のみを目的としています。医療的な診断、栄養相談、治療計画を代行するものではありません。食事やフィットネスを大きく変更する際は、必ず医師や専門家にご相談ください。</li>
+  
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QWEN SETUP -->
+    <section>
+      <h2>オプション1: Qwen / Alibaba Cloud (デフォルト — 最安値)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Qwen (DashScope) — <code>qwen3-vl-flash</code></h3>
+          <span class="badge badge-green">最安値 · デフォルト</span>
+        </div>
+        <p>QwenはFuelFitの標準プロバイダーです。<code>qwen3-vl-flash</code>モデルは、画像認識に対応したモデルの中で最も費用が安く、日本の家庭料理やアジアの食事も高精度で識別できます。新規Alibaba Cloudアカウントには無料枠が付与されます。</p>
+        <h3>設定手順</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Alibaba Cloudアカウントの作成</strong><br>
+        <a href="https://account.alibabacloud.com/register" target="_blank">account.alibabacloud.com/register</a>（インターナショナル版）または<a href="https://account.aliyun.com" target="_blank">account.aliyun.com</a>（中国国内版）で登録を行います。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Model Studio (百炼) の有効化</strong><br>
+        <a href="https://bailian.console.aliyun.com" target="_blank">bailian.console.aliyun.com</a> にアクセスしてModel Studioサービスを有効化します。新規アカウントには<strong>数ヶ月間の利用に十分な無料枠</strong>（100万トークン）が付与されます。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>APIキーの作成</strong><br>
+        Model Studioコンソール → <strong>API Key Management</strong> → <strong>"Create API Key"</strong> をクリックし、作成されたキー（<code>sk-</code>で始まります）をコピーします。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>FuelFitアプリに入力</strong><br>
+        FuelFitを開き、<strong>設定 → AIサービス</strong> からプロバイダーで<strong>Qwen</strong>を選択します。Base URLとModelは自動入力されます。精度をさらに高めたい場合は、モデルを<code>qwen3-vl-flash</code>から<code>qwen3-vl-plus</code>に変更してください。コピーしたAPIキーを貼り付け、<strong>「接続を確認」</strong>をタップします。
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$0.69 / year</div>
+          <div class="label">想定年間費用（アクティブユーザー：毎日6枚写真撮影、12回コーチ起動）</div>
+        </div>
+        <div class="note"><strong>無料枠について:</strong> 新規登録時に付与される100万トークンで数ヶ月間十分に利用できます。<code>qwen3-vl-flash</code>モデルは画像認識に特化した設計となっており、最も経済的なビジョンモデルです。</div>
+      </div>
+    </section>
+
+    <!-- OPENAI SETUP -->
+    <section>
+      <h2>オプション2: OpenAI (最も信頼性が高い)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>OpenAI — <code>gpt-4o-mini</code></h3>
+          <span class="badge badge-green">最も信頼性が高い</span>
+        </div>
+        <p>OpenAIは、非常に安定した応答性能と広範な互換性を提供します。Qwenに比べてコストはわずかに高くなりますが、出力の精度や挙動が極めて予測しやすいのが特徴です。</p>
+        <h3>設定手順</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>OpenAIアカウントの作成</strong><br>
+        <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a> にアクセスし、メールアドレスやGoogle/Microsoftアカウントで登録します。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>支払い方法の設定</strong><br>
+        <a href="https://platform.openai.com/settings/organization/billing" target="_blank">設定 → 支払い管理 (Billing)</a> でクレジットカードを登録し、事前にチャージします（最低5ドルからデポジット可能）。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>APIキーの作成</strong><br>
+        <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a> に進み、<strong>"Create new secret key"</strong> をクリック。名前（「FuelFit」など）を入力して<strong>「Create key」</strong>をクリックします。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>キーをコピーして保存</strong><br>
+        生成されたキー（<code>sk-</code>で始まります）をすぐにコピーして控えます。一度画面を閉じると二度と再表示されません。安全な場所に保存してください。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>FuelFitアプリに入力</strong><br>
+        FuelFitを開き、<strong>設定 → AIサービス</strong> で <strong>OpenAI</strong> を選択。プリセットされているBase URL <code>https://api.openai.com/v1</code> とモデル <code>gpt-4o-mini</code> を確認し、キーを貼り付けて<strong>「接続を確認」</strong>をタップします。
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.45 / year</div>
+          <div class="label">想定年間費用（アクティブユーザー：毎日6枚写真撮影、12回コーチ起動）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISTRAL SETUP -->
+    <section>
+      <h2>オプション3: Mistral (EU拠点)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Mistral — <code>mistral-small-latest</code></h3>
+          <span class="badge badge-yellow">EU拠点</span>
+        </div>
+        <p>Mistralはオープンウェイトモデルで有名なヨーロッパのAI企業です。データをEUの法管轄区域内で処理したい場合や、Mistralのモデルを利用したい場合に最適です。</p>
+        <h3>設定手順</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Mistralアカウントの作成</strong><br>
+        <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a> にアクセスしてアカウントを登録します。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>クレジットカードの登録</strong><br>
+        <strong>Billing</strong> から支払い情報を追加します。制限付きの無料枠も用意されています。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>APIキーの作成</strong><br>
+        <strong>API Keys</strong> から <strong>"Create new key"</strong> をクリックし、生成されたキーをコピーします。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>FuelFitアプリに入力</strong><br>
+        FuelFitの <strong>設定 → AIサービス</strong> から <strong>Mistral</strong> を選択。Base URL <code>https://api.mistral.ai/v1</code> とモデル <code>mistral-small-latest</code> を確認し、キーを貼り付けて<strong>「接続を確認」</strong>をタップします。
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.60 / year</div>
+          <div class="label">想定年間費用（アクティブユーザー：毎日6枚写真撮影、12回コーチ起動）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOM PROVIDER -->
+    <section>
+      <h2>オプション4: カスタム (すべてのOpenAI互換エンドポイント)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Custom Provider</h3>
+          <span class="badge badge-yellow">パワーユーザー向け</span>
+        </div>
+        <p>Anthropic Claude、Google Gemini、ローカルにホストされたvLLMサーバー、多機能なOpenRouterゲートウェイなど、アプリに組み込まれていないプロバイダーを利用したい場合は、<strong>「カスタム」</strong> を選択して手動設定します。</p>
+        <div class="warn"><strong>Anthropicが標準搭載されていない理由:</strong> Anthropicの公式OpenAI互換アダプターは、画像処理（Vision）リクエスト時に画像をサイレントでドロップしてしまう不具合が確認されています。Claudeを使って食事写真を分析する場合は、<a href="https://openrouter.ai" target="_blank">OpenRouter</a>をカスタムプロバイダーとして経由するのが最も確実です。</div>
+        <h3>設定手順</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>お好みのプロバイダーからAPIキーを取得</strong><br>
+        例: <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>、<a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>、またはご自身のローカルサーバーなど。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>OpenAI互換のBase URLを確認</strong><br>
+        例: OpenRouterは <code>https://openrouter.ai/api/v1</code> 、Google AI Studioは <code>https://generativelanguage.googleapis.com/v1beta/openai</code> となります。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Vision機能対応モデルの選択</strong><br>
+        画像を受け取れるマルチモーダルモデルが必要です。例: <code>anthropic/claude-3.5-sonnet</code>, <code>google/gemini-2.0-flash</code>, <code>openai/gpt-4o-mini</code> など。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>FuelFitアプリに入力</strong><br>
+        FuelFitを開き、<strong>設定 → AIサービス</strong> から <strong>カスタム</strong> を選択。<strong>名前</strong>、<strong>Base URL</strong>、<strong>Model</strong>、<strong>API Key</strong> を手動で入力し、<strong>「接続を確認」</strong>をタップします。
+      </div>
+    </div>
+  
+        <div class="note"><strong>利用コストはモデルにより大きく異なります。</strong> 各モデルのトークン単価は OpenRouter などの公式サイトで公開されています。</div>
+      </div>
+    </section>
+
+    <!-- AI COACH TOGGLE -->
+    <section>
+      <h2>AI食事コーチのスイッチについて</h2>
+      <div class="card">
+        <p>FuelFitに搭載された2つのAI機能は、データ送信の仕組みが大きく異なります。そのため、片方にのみオン/オフのスイッチが用意されています：</p>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>食事写真分析（ユーザー発信）:</strong> カメラで撮影を行い、送信ボタンを押すまでプロバイダーへデータが送られることはありません。写真を撮らなければAPIも呼び出されないため、スイッチ制御は不要です。</li>
+    <li><strong>AI食事コーチ（自動実行）:</strong> 「分析」タブを開いた際や、ホーム画面のコーチカードが更新される際に、FuelFitは当日の栄養総計データをプロバイダーに自動送信してアドバイスを生成します。プライバシーの観点から、このようなバックグラウンドでの自動送信を避けたい利用者のために、この機能にはオン/オフのスイッチが設けられています。</li>
+  
+        </ul>
+        <p style="margin-top: 0.75rem;">AI食事コーチを「オフ」にしても、食事写真のAI分析はそのまま利用可能です。コーチング機能のみがオフになり、アプリ上で動作する内蔵テンプレート（完全ローカル処理）による代替アドバイスに静かに切り替わります。</p>
+
+        <h3>各機能の特徴とデータ送信タイミング</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>機能</th>
+              <th>動作内容</th>
+              <th>送信タイミング</th>
+              <th>停止方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>食事写真分析</strong></td>
+              <td>撮影した写真から食べ物を識別し、栄養成分を推定する</td>
+              <td>カメラボタンをタップして写真を送信したときのみ</td>
+              <td>写真を撮影しない（または設定からAPIキーを消去して連携を完全に遮断する）</td>
+            </tr>
+            <tr>
+              <td><strong>AI食事コーチ</strong></td>
+              <td>記録された食事データに基づき、コーチングメッセージを生成する</td>
+              <td>「分析」タブの表示時やホーム画面カード更新時などに自動で送信</td>
+              <td><span class="badge badge-green">スイッチをオフにする</span> 設定 → AIサービス → AI食事コーチ。オフにすると、端末内のローカルテンプレートによるアドバイスに切り替わります。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>送信されるデータの内訳</h3>
+        <div class="note">
+          <ul style="margin-left: 1rem;">
+            
+    <li><strong>送信先とデータ内容:</strong></li>
+    <li><strong>食事写真分析:</strong> 撮影された写真と「この食べ物を分析して」という指示テキストのみがプロバイダーへ直接送られます。個人情報は含まれません。</li>
+    <li><strong>AI食事コーチ (オンの場合):</strong> 当日の栄養素の合計数値（カロリー、タンパク質、炭水化物、脂質、食物繊維、糖分、塩分、水分量、食事回数）のみが送られます。写真やプロフィール、過去の履歴データは一切送信されません。</li>
+    <li><strong>テンプレートコーチ (オフまたは通信エラー時):</strong> 端末のローカル環境のみでデータが処理され、一切の情報がスマートフォンから送信されることはありません。</li>
+  
+          </ul>
+        </div>
+
+        <h3>「AI」バッジ — 出所の明記</h3>
+        <div class="note">「分析」タブのコーチカードにおいて、外部プロバイダーのAIによって生成されたアドバイスには、カード内に小さな「AI」ラベルが表示されます。スイッチがオフの場合や、エラーによりローカルテンプレートが作動した場合はこのバッジが非表示になり、ユーザーは読んでいるアドバイスがAI製かローカル製かを一目で確認できます。</div>
+
+        <h3>AI食事コーチをオフにする方法 (設定)</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>設定タブを開く</strong><br>
+        FuelFitの下部メニューから「設定」をタップします。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>「AIサービス」を展開</strong><br>
+        「AIサービス」のアコーディオンをタップ。プロバイダー設定の下に「AI食事コーチ」のスイッチが表示されます。
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>スイッチをオフにする</strong><br>
+        オフにすると、アドバイスがローカルテンプレート製に変わり、カード上の「AI」バッジが消えます。写真分析は引き続き正常に利用できます。
+      </div>
+    </div>
+  
+
+        <h3>オンボーディング中の挙動</h3>
+        <p style="color: var(--text2); font-size: 0.9rem;">初回起動時のAI設定画面では、以下の2つのルートを選べます：</p>
+        <ul style="color: var(--text2); font-size: 0.9rem; margin-left: 1.25rem; margin-bottom: 0.5rem;">
+          
+    <li><strong>プロバイダーを設定し接続確認を行う</strong> — 次の画面に「AI食事コーチ」のスイッチ（初期値オン）が表示され、写真分析のみにしたい場合はそこでオフにできます。</li>
+    <li><strong>スキップする</strong> — スイッチの選択画面は表示されず、自動的に「オフ」に設定されます。AI機能が無効化されている旨のバナーが表示され、設定からいつでもAPIキーを入力してオンに切り替え可能です。</li>
+  
+        </ul>
+
+        <div class="note"><strong>プライバシーに関する注意:</strong> AI食事コーチをオフに設定している場合、あなたがカメラで食事写真を撮影しない限り、プロバイダーと接続されることはありません。日常のまとめデータなどが自動で送信されることはなく、端末内で安全に完結します。</div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2>よくある質問 (FAQ)</h2>
+      <div class="card">
+        
+      <h3>APIキーは安全に保護されますか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">はい。設定されたAPIキーは端末内に暗号化して保存されます。FuelFitには<strong>バックエンドサーバーが存在しない</strong>ため、データは他者を経由せず、直接指定のAIプロバイダーへ送信されます。開発元がキーや食事データを閲覧・収集することは技術的に不可能です。</p>
+    
+      <h3>機種変更時のデータ移行はどうなりますか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">設定メニュー内に「インポート/エクスポート」機能を備えています。データをファイルに出力し、新しい端末で読み込ませるだけで、食事データ、設定、さらには暗号化されたAPIキーも一括で移行できます。</p>
+    
+      <h3>コーチ機能は使わず、写真分析のみにAIを使うことはできますか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">はい、可能です。<strong>設定 → AIサービス</strong>を開き、<strong>AI食事コーチ</strong>のトグルスイッチをオフにしてください。写真分析のVision機能のみがアクティブに維持されます。</p>
+    
+      <h3>複数のプロバイダーを併用できますか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">同時に有効化できるのは1社のみですが、設定画面で簡単に切り替えられます。組み込みの3社（Qwen, OpenAI, Mistral）はそれぞれの設定値を保持するため、ワンタップで切り替え可能です。</p>
+    
+      <h3>プロバイダーのチャージ残高が切れた場合はどうなりますか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">写真の送信時やコーチメッセージの生成時にエラーが表示されます。コーチ呼び出しがエラーになった場合、Insightsカードはエラー表示を出さずにテンプレートでの代用アドバイスを表示し、「AI」バッジが消えます。プロバイダーにチャージすればすぐに復旧します。</p>
+    
+      <h3>FuelFitの利用にAPIキーは必須ですか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">いいえ、必須ではありません。APIキーを設定しなくても、手動での食事記録やカロリー管理は完全無料でご利用いただけます。写真分析やAIコーチを利用したい場合のみキーを設定してください。</p>
+    
+      <h3>どのプロバイダーを選ぶべきですか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        <ul style="color: var(--text2); font-size: 0.9rem;">
+          <li><strong>デフォルト:</strong> Qwen <code>qwen3-vl-flash</code> — 最も低コストで画像認識が優秀、新規アカウントに無料枠あり</li>
+          <li><strong>信頼性重視:</strong> OpenAI <code>gpt-4o-mini</code> — 挙動が最も安定的で指示通りに出力される</li>
+          <li><strong>EU圏ユーザー:</strong> Mistral <code>mistral-small-latest</code></li>
+          <li><strong>その他（ClaudeやGeminiなど）:</strong> 「カスタム」を選択し、<a href="https://openrouter.ai" target="_blank">OpenRouter</a> 経由での接続をお勧めします</li>
+        </ul>
+      </p>
+    
+      <h3>プロバイダーの切り替え方は？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;"><strong>設定 → AIサービス</strong> に進み、リストから別会社をタップしてAPIキーを入力し、<strong>「接続を確認」</strong>をタップします。これまでの履歴やスイッチ設定は引き継がれます。</p>
+    
+      <h3>なぜ組み込みプロバイダーのモデル名が編集可能なのですか？</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">初期設定はコスト効率を最優先したモデルです。より高い認識精度を求める場合は、Qwenの <code>qwen3-vl-plus</code> に書き換えたり、OpenAIの <code>gpt-4o</code> に書き換えて接続確認を行うことができます。</p>
+    
+      </div>
+    </section>
+
+    <footer>
+      <p>FuelFit AIプロバイダーガイド — 内部リファレンスドキュメント</p>
+      <p style="margin-top: 0.5rem;">この内容は2026年6月時点のOpenAI/Qwen/Mistralプロバイダー移行仕様を反映しています。料金は各公式ページの発表に基づいた推定値です。</p>
+    </footer>
+  </div>
+</body>
+</html>

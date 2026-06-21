@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuelFit — AI 제공업체 설정 안내서</title>
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text2: #475569;
+      --muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --green: #22c55e;
+      --green-light: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-light: #fef3c7;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --code-bg: #f1f5f9;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --text2: #94a3b8;
+        --muted: #64748b;
+        --border: #334155;
+        --accent: #60a5fa;
+        --accent-light: #1e3a5f;
+        --green: #4ade80;
+        --green-light: #14532d;
+        --yellow: #fbbf24;
+        --yellow-light: #713f12;
+        --red: #f87171;
+        --red-light: #7f1d1d;
+        --code-bg: #1e293b;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text2); font-size: 1.1rem; }
+
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .step-content { flex: 1; }
+
+    code {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: var(--code-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background: var(--green-light); color: var(--green); }
+    .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+    .badge-red { background: var(--red-light); color: var(--red); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text2);
+    }
+
+    .note {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .note strong { color: var(--text); }
+
+    .warn {
+      background: var(--yellow-light);
+      border-left: 4px solid var(--yellow);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: var(--text2);
+      font-size: 0.9rem;
+    }
+
+    .warn strong { color: var(--text); }
+
+    .provider-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .provider-header h3 { margin: 0; }
+
+    .cost-est {
+      background: var(--green-light);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .cost-est .big {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .cost-est .label {
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+
+    ol, ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+    li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--text2); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 1rem; }
+      h1 { font-size: 1.6rem; }
+      th, td { padding: 0.5rem; font-size: 0.8rem; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FuelFit — AI 제공업체 설정 안내서</h1>
+      <p class="subtitle">API 키를 획득하고 AI 식사 사진 분석을 활성화하는 방법</p>
+      <div class="note" style="text-align: left; margin-top: 1rem;">
+        <strong>100% 투명성: 사용자 몰래 과금되는 현상을 방지하기 위해, FuelFit의 데이터 처리 방침을 명확히 공개합니다:</strong>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>백엔드 서버 없음</strong> — 모든 데이터는 사용자의 기기 내에만 암호화되어 안전하게 보관됩니다</li>
+    <li><strong>직접 API 호출</strong> — AI 요청은 기기에서 사용자가 설정한 제공업체로 직접 전송됩니다</li>
+    <li><strong>명시적 동의제</strong> — 온보딩 과정에서 AI 사용 여부를 직접 결정할 수 있으며, 완전히 건너뛸 수도 있습니다</li>
+    <li><strong>데이터 공유 최소화 스위치</strong> — 설정에서 <strong>AI 식단 코치</strong> 기능을 비활성화할 수 있습니다. 비활성화 시 사용자가 직접 카메라로 사진을 찍어 식단을 기록할 때만 서버를 호출하며, 코칭 메시지 생성을 위해 식단 정보가 백그라운드로 자동 전송되지 않습니다. 사진 분석 역시 사용자가 직접 촬영할 때만 실행되므로 완벽히 사용자 주도로만 작동합니다.</li>
+    <li><strong>정직한 AI 라벨</strong> — 기기 내부의 템플릿 기능으로 대체되어 조언을 제공할 때(스위치 오프, API 키 미설정, AI 오류 등) 카드에서 'AI' 배지가 사라집니다. 사용자는 본인이 읽고 있는 조언이 AI가 생성한 것인지 로컬 템플릿이 제공한 것인지 바로 구분할 수 있습니다.</li>
+    <li><strong>내보내기/가져오기</strong> — 설정 → 내보내기/가져오기를 통해 데이터를 파일 형태로 안전하게 백업 및 이동할 수 있습니다</li>
+  
+        </ul>
+      </div>
+    </header>
+
+    <!-- COST OVERVIEW -->
+    <section>
+      <h2>이용 요금은 얼마인가요?</h2>
+
+      <div class="card">
+        <p>FuelFit은 식사 사진 분석에 AI를 활용합니다. 사용자가 자신의 API 키를 직접 등록하여 사용하는 방식(BYOK)으로, FuelFit 애플리케이션 자체 이용료나 구독료는 발생하지 않습니다. 비용은 선택한 AI 제공업체와 사용량에 따라 부과됩니다.</p>
+
+        <h3>예상 연간 요금 (액티브 유저 기준)</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">하루 평균 사진 기록 6회(종합 기록) + 식단 코치 호출 12회(캐시 만료 등)를 1년(365일) 동안 이용했을 때 기준</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>제공업체</th>
+              <th>기본 설정 모델</th>
+              <th>예상 연간 요금</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen (Alibaba)</strong></td>
+              <td><code>qwen3-vl-flash</code></td>
+              <td><strong>~$0.69 / year</strong></td>
+              <td><span class="badge badge-green">가장 저렴함 · 기본값</span> 한식 및 아시아 지역 음식 인식 성능이 뛰어남; 국내 사용자에게 가장 권장</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td><code>gpt-4o-mini</code></td>
+              <td><strong>~$1.45 / year</strong></td>
+              <td><span class="badge badge-green">가장 안정적임</span> 생태계 지원이 광범위하며 응답 성능이 매우 예측 가능하고 안정적임</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong></td>
+              <td><code>mistral-small-latest</code></td>
+              <td><strong>~$1.60 / year</strong></td>
+              <td><span class="badge badge-yellow">EU 기반</span> 오픈 가중치 제공업체, 우수한 개인정보 보호 수준 제공</td>
+            </tr>
+            <tr>
+              <td><strong>Custom</strong></td>
+              <td>Your choice</td>
+              <td>Varies</td>
+              <td><span class="badge badge-yellow">고급 사용자용</span> OpenRouter, OpenRouter를 통한 Claude, 자체 구축 서버 등 OpenAI 호환 규격의 모든 엔드포인트 지원</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>토큰 사용량 및 요금 계산 상세 내역</h3>
+        <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem;">앱 코드와 AI 제공업체가 통신할 때 실제로 소모되는 구체적인 토큰 내역입니다. 불투명한 요금 청구를 막고자 명확하게 밝힙니다:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>기능</th>
+              <th>비고</th>
+              <th>평균 입력 토큰</th>
+              <th>평균 출력 토큰</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>식사 사진 분석</strong></td>
+              <td>
+      • 시스템 프롬프트: 약 500 토큰 (출력 형식 및 영양소 계산 공식 정의)<br>
+      • 사용자 프롬프트: 약 20 토큰 ("사진 속 음식 분석...")<br>
+      • 이미지 토큰:
+        <ul style="margin-top: 0.25rem; margin-left: 1rem; font-size: 0.85rem;">
+          <li><strong>OpenAI:</strong> 765 토큰 (768x1024 해상도 기준 고화질 분할 타일 모드 자동 적용)</li>
+          <li><strong>Qwen:</strong> 약 1,000 토큰 (패치 기반 분석: 28x28 픽셀당 1 토큰)</li>
+          <li><strong>Mistral:</strong> 약 1,200 토큰 (시각적 토큰화)</li>
+        </ul>
+    </td>
+              <td>
+                • OpenAI: <strong>~1,285</strong><br>
+                • Qwen: <strong>~1,520</strong><br>
+                • Mistral: <strong>~1,720</strong>
+              </td>
+              <td><strong>~250</strong> tokens</td>
+            </tr>
+            <tr>
+              <td><strong>AI 식단 코치 호출</strong></td>
+              <td>
+      • 시스템 프롬프트 골격: 약 500 토큰 (톤앤매너, 제약사항, JSON 규격 설정)<br>
+      • 사용자 데이터 컨텍스트: 약 250 토큰 (현재 시각, 당일 총 섭취 영양소, 오늘의 식단 목록, 단식 시간, 목표 설정 등)
+    </td>
+              <td><strong>~750</strong> tokens</td>
+              <td><strong>~80</strong> tokens</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>API 요금 상세 (일 6회 사진 분석 및 12회 코치 호출 기준)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>제공업체 / Model</th>
+              <th>API 요금 (100만 토큰당)</th>
+              <th>사진당 요금</th>
+              <th>코치 호출당 요금</th>
+              <th>일일 예상 요금</th>
+              <th>연간 예상 요금 (365일)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen</strong> (<code>qwen3-vl-flash</code>)</td>
+              <td>$0.05 / $0.40</td>
+              <td>$0.000176</td>
+              <td>$0.000070</td>
+              <td>$0.001890</td>
+              <td><strong>~$0.69 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong> (<code>gpt-4o-mini</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000343</td>
+              <td>$0.000161</td>
+              <td>$0.003983</td>
+              <td><strong>~$1.45 / year</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Mistral</strong> (<code>mistral-small-latest</code>)</td>
+              <td>$0.15 / $0.60</td>
+              <td>$0.000408</td>
+              <td>$0.000161</td>
+              <td>$0.004374</td>
+              <td><strong>~$1.60 / year</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note"><strong>하루 코치 호출이 12회나 발생하는 이유가 무엇인가요?</strong> 앱은 코치 조언을 기기 내부에 저장하여 재사용(캐싱)합니다. 먹은 음식이 변하지 않으면 API를 재호출하지 않습니다. 다만 음식을 새로 기록하거나 물을 마시는 등 기록이 변하거나 시간이 정각을 넘어가면 기존 캐시는 무효화됩니다. 일반 사용자가 하루 동안 사진 6회 기록, 물 4회 기록, 정각 이후 앱 2회 실행을 가정할 시 하루 평균 12번의 호출이 발생하게 됩니다.</div>
+        <div class="note"><strong>사용 모델은 언제든지 수정이 가능합니다.</strong> 위 예시에 사용된 모델은 편의성을 위해 설정된 권장값일 뿐 고정된 것이 아닙니다. 온보딩이나 설정 화면에서 내장 제공업체를 선택하면 Base URL과 Model 필드가 채워져서 나타나는데 이를 직접 수정할 수 있습니다. 예를 들어 Qwen을 사용하면서 <code>qwen3-vl-plus</code>로 모델을 상향 변경하거나 OpenAI에서 <code>gpt-4o</code>를 입력하여 테스트할 수 있습니다.</div>
+
+        <div class="warn">
+          <strong>면책 사항 및 결제 안전 조치:</strong>
+          <ul style="margin-top: 0.5rem; margin-left: 1rem; font-size: 0.85rem;">
+            
+    <li><strong>가격 책정:</strong> 위의 API 요금율, 토큰 소모량 및 연간 추정 금액은 참고용입니다. AI 제공업체(OpenAI, Alibaba Cloud, Mistral)는 자체 가격 정책을 고수하며 사전 고지 없이 가격을 변경할 수 있습니다. FuelFit은 결제를 대행하지 않으며 수수료를 취하지 않습니다.</li>
+    <li><strong>이용 한도 설정:</strong> API 키의 유출이나 과다한 데이터 전송으로 인한 요금 폭탄을 막기 위해, 각 AI 제공업체의 개발자 대시보드에서 **월 이용 한도(Hard Limit)**를 반드시 설정할 것을 강력히 권장합니다.</li>
+    <li><strong>의료 면책 조항:</strong> FuelFit 앱 및 AI 식단 코치의 피드백은 영양 지식 전달 및 건강 관리 지원 목적으로만 제공됩니다. 의료적 진단, 식사 치료, 의학적 처방을 대신하지 않습니다. 식단 및 운동 계획을 급격히 변경할 때는 의사 등 보건 의료 전문가와 상담하시기 바랍니다.</li>
+  
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QWEN SETUP -->
+    <section>
+      <h2>옵션 1: Qwen / Alibaba Cloud (기본 권장 — 가장 저렴함)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Qwen (DashScope) — <code>qwen3-vl-flash</code></h3>
+          <span class="badge badge-green">가장 저렴함 · 기본값</span>
+        </div>
+        <p>Qwen은 FuelFit의 기본 제공업체입니다. <code>qwen3-vl-flash</code> 모델은 현재 시각 분석 모델 중 요금이 가장 저렴하면서도 한식을 비롯한 동아시아 요리를 아주 훌륭하게 찾아냅니다. Alibaba Cloud 신규 가입 시 무료 크레딧을 받을 수 있습니다.</p>
+        <h3>설정 방법</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Alibaba Cloud 계정 생성</strong><br>
+        <a href="https://account.alibabacloud.com/register" target="_blank">account.alibabacloud.com/register</a>(글로벌) 혹은 <a href="https://account.aliyun.com" target="_blank">account.aliyun.com</a>(중국 사이트)에 접속해 가입합니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Model Studio (百炼) 서비스 신청</strong><br>
+        <a href="https://bailian.console.aliyun.com" target="_blank">bailian.console.aliyun.com</a> 에 접속하여 백련(Model Studio) 서비스를 신청해 활성화합니다. 신규 가입자에게 <strong>수개월 분량에 달하는 100만 토큰의 무료 혜택</strong>이 바로 지급됩니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>API 키 만들기</strong><br>
+        Model Studio 콘솔 화면의 → <strong>API Key Management</strong> 메뉴로 이동 → <strong>"Create API Key"</strong> 단추 클릭 → 생성된 키(<code>sk-</code>로 시작함)를 복사합니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>FuelFit 앱에 등록</strong><br>
+        FuelFit 앱에서 <strong>설정 → AI 서비스</strong> 로 이동하여 제공업체에 <strong>Qwen</strong>을 선택합니다. Base URL 및 Model 필드는 이미 기입되어 있습니다. 더 높은 인식률을 시험하려면 모델명을 <code>qwen3-vl-plus</code>로 수정하여 사용하세요. 복사한 API 키를 붙여넣고 <strong>연결 확인</strong>을 탭합니다.
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$0.69 / year</div>
+          <div class="label">액티브 유저 기준 예상 연간 요금 (하루 사진 6회 + 코칭 12회 호출 기준)</div>
+        </div>
+        <div class="note"><strong>무료 혜택:</strong> 신규 사용자에게 100만 무료 토큰을 지급하여 오랜 기간 무료로 테스트할 수 있습니다. <code>qwen3-vl-flash</code>는 시각 식별 전용으로 나와 비용 대비 효율성이 매우 높습니다.</div>
+      </div>
+    </section>
+
+    <!-- OPENAI SETUP -->
+    <section>
+      <h2>옵션 2: OpenAI (가장 안정적임)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>OpenAI — <code>gpt-4o-mini</code></h3>
+          <span class="badge badge-green">가장 안정적임</span>
+        </div>
+        <p>OpenAI는 업계에서 가장 신뢰받고 널리 쓰입니다. Qwen에 비해 비용은 소폭 높으나 결과물의 품질과 답변 형식이 매우 정교하고 안정적으로 유지됩니다.</p>
+        <h3>설정 방법</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>OpenAI 계정 생성</strong><br>
+        <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a> 에서 이메일이나 소셜 아이디로 계정을 만듭니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>결제 수단 및 충전 설정</strong><br>
+        <a href="https://platform.openai.com/settings/organization/billing" target="_blank">설정 → 결제(Billing)</a> 메뉴로 이동하여 신용카드를 등록하고 선불 충전(최소 5달러 이상)을 진행합니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>API 키 만들기</strong><br>
+        <a href="https://platform.openai.com/api-keys" target="_blank">API Keys</a> 메뉴로 이동 → <strong>"Create new secret key"</strong> 클릭 → 이름(예: FuelFit) 입력 → <strong>"Create key"</strong> 클릭.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>키 복사 및 보관</strong><br>
+        키(<code>sk-</code>로 시작함)를 복사하여 안전한 위치에 기록해 둡니다. 보안을 위해 화면을 닫으면 해당 키값은 재차 표시되지 않습니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>FuelFit 앱에 등록</strong><br>
+        FuelFit 앱에서 <strong>설정 → AI 서비스</strong> 로 이동하여 제공업체에 <strong>OpenAI</strong>를 선택합니다. 채워진 URL(<code>https://api.openai.com/v1</code>)과 모델(<code>gpt-4o-mini</code>) 확인 후 키를 입력해 <strong>연결 확인</strong>을 탭합니다.
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.45 / year</div>
+          <div class="label">액티브 유저 기준 예상 연간 요금 (하루 사진 6회 + 코칭 12회 호출 기준)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISTRAL SETUP -->
+    <section>
+      <h2>옵션 3: Mistral (EU 기반)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Mistral — <code>mistral-small-latest</code></h3>
+          <span class="badge badge-yellow">EU 기반</span>
+        </div>
+        <p>Mistral은 개방형 가중치 모델을 적극 배포하는 유럽의 대표적인 인공지능 기업입니다. 데이터가 유럽 지역 사법권 하에 다뤄지기를 희망하거나 Mistral 모델을 사용하고 싶을 때 선택하세요.</p>
+        <h3>설정 방법</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Mistral 계정 생성</strong><br>
+        <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a> 에서 계정을 가입합니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>크레딧 충전</strong><br>
+        <strong>Billing</strong> 메뉴에서 카드를 등록하고 금액을 충전합니다. 일부 제한적인 무료 크레딧도 제공됩니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>API 키 만들기</strong><br>
+        <strong>API Keys</strong> 로 이동 → <strong>"Create new key"</strong> 클릭 → 생성된 키를 즉시 복사합니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>FuelFit 앱에 등록</strong><br>
+        FuelFit 앱에서 <strong>설정 → AI 서비스</strong> 로 이동하여 제공업체에 <strong>Mistral</strong>을 선택합니다. URL(<code>https://api.mistral.ai/v1</code>)과 모델명(<code>mistral-small-latest</code>) 확인 후 키를 붙여넣고 <strong>연결 확인</strong>을 탭합니다.
+      </div>
+    </div>
+  
+        <div class="cost-est">
+          <div class="big">~$1.60 / year</div>
+          <div class="label">액티브 유저 기준 예상 연간 요금 (하루 사진 6회 + 코칭 12회 호출 기준)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOM PROVIDER -->
+    <section>
+      <h2>옵션 4: Custom (그 외 OpenAI 표준 규격 지원 모델)</h2>
+      <div class="card">
+        <div class="provider-header">
+          <h3>Custom Provider</h3>
+          <span class="badge badge-yellow">고급 사용자용</span>
+        </div>
+        <p>내장 제공업체 외에 Anthropic Claude, Google Gemini, 직접 호스팅한 vLLM 모델, 그리고 다중 서비스 게이트웨이인 OpenRouter 등 타사 API를 이용하고 싶은 경우 <strong>Custom</strong>을 택하여 정보를 입력합니다.</p>
+        <div class="warn"><strong>Anthropic Claude가 내장되어 있지 않은 이유:</strong> Anthropic사의 자체 OpenAI 호환 어댑터가 이미지 업로드 요청 시 가끔 이미지를 유실시키는 문제가 확인되었습니다. 식사 사진 분석에 Claude 모델을 쓰시려면 <a href="https://openrouter.ai" target="_blank">OpenRouter</a>를 통해 Custom으로 연동하시는 편이 훨씬 안전하고 신뢰도가 높습니다.</div>
+        <h3>설정 방법</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>사용할 서비스의 API 키 획득</strong><br>
+        예: <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>, <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a> 또는 개인 서버 등.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>해당 서비스의 OpenAI 호환 규격 Base URL 획득</strong><br>
+        대부분의 업체가 안내서를 제공합니다. 예: OpenRouter는 <code>https://openrouter.ai/api/v1</code>, 구글 AI 스튜디오는 <code>https://generativelanguage.googleapis.com/v1beta/openai</code> 입니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>이미지(Vision)를 지원하는 모델명 확인</strong><br>
+        식단 추정을 위해 이미지를 입력받는 멀티모달 모델이 필요합니다. 예: <code>anthropic/claude-3.5-sonnet</code>, <code>google/gemini-2.0-flash</code>, <code>openai/gpt-4o-mini</code> 등.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>FuelFit 앱에 등록</strong><br>
+        FuelFit 앱에서 <strong>설정 → AI 서비스</strong> 로 이동하여 제공업체에 <strong>Custom</strong>을 선택합니다. <strong>이름</strong>, <strong>Base URL</strong>, <strong>Model</strong>, <strong>API Key</strong>를 각각 기입하고 <strong>연결 확인</strong>을 탭합니다.
+      </div>
+    </div>
+  
+        <div class="note"><strong>이용 요금은 모델에 따라 크게 상이합니다.</strong> 각 모델별 토큰 단가는 OpenRouter 등 해당 서비스 대시보드에서 확인할 수 있습니다.</div>
+      </div>
+    </section>
+
+    <!-- AI COACH TOGGLE -->
+    <section>
+      <h2>AI 식단 코치 스위치</h2>
+      <div class="card">
+        <p>FuelFit에 제공되는 두 개의 AI 기능은 서버를 호출하고 데이터를 전송하는 방식이 상이하며, 이에 따라 한 가지 기능에만 On/Off 스위치를 제공합니다:</p>
+        <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+          
+    <li><strong>식사 사진 분석 (사용자 시작형):</strong> 카메라로 사진을 찍어 전송할 때만 서버를 호출합니다. 사진을 찍어 올리지 않으면 어떠한 전송도 일어나지 않아 스위치 통제가 필요 없습니다.</li>
+    <li><strong>AI 식단 코치 (자동 백그라운드 호출형):</strong> '분석' 탭을 누르거나 홈 화면 코치 카드가 갱신될 때 FuelFit은 오늘의 총 영양 섭취 정보를 기반으로 코칭 의견을 구합니다. 일부 사용자는 보안상 이러한 백그라운드 호출이 자동으로 일어나는 것을 차단하고 싶어 합니다. 따라서 이 기능에 제어 스위치를 부착해 두었습니다.</li>
+  
+        </ul>
+        <p style="margin-top: 0.75rem;">AI 식단 코치 스위치를 꺼두어도 사진 촬영을 통한 음식 분석은 완벽하게 동작합니다. 코치 의견만 로컬 템플릿(휴대폰 내부 연산으로 동작)에 의한 조언 텍스트로 자연스럽게 교체됩니다.</p>
+
+        <h3>기능별 데이터 흐름 요약</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>기능</th>
+              <th>설명</th>
+              <th>서버 호출 시점</th>
+              <th>호출을 막는 방법</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>식사 사진 분석</strong></td>
+              <td>찍어 올린 사진 속 음식을 인식하여 영양소 섭취 비율 추정</td>
+              <td>카메라 버튼을 누르고 촬영하여 전송할 때만</td>
+              <td>사진 촬영을 하지 마세요. (설정에서 키를 지워 연동을 끊을 수도 있습니다.)</td>
+            </tr>
+            <tr>
+              <td><strong>AI 식단 코치</strong></td>
+              <td>기록된 식단 데이터를 모아서 피드백 및 조언 생성</td>
+              <td>자동 실행 — 분석 탭 실행, 홈 화면 카드 자동 갱신 및 특정 트리거 시</td>
+              <td><span class="badge badge-green">스위치 끄기</span> 설정 → AI 서비스 → AI 식단 코치 토글 Off. 로컬 내장 템플릿으로 조언이 교체됩니다.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>데이터 수집 및 안전성</h3>
+        <div class="note">
+          <ul style="margin-left: 1rem;">
+            
+    <li><strong>어떤 데이터가 가나요:</strong></li>
+    <li><strong>사진 분석:</strong> 찍은 사진 파일과 이를 해석하기 위한 짧은 명령어(프롬프트)만 전송되며, 다른 정보는 일체 나가지 않습니다.</li>
+    <li><strong>식단 코치 (On 상태):</strong> 오늘의 영양소 총합 데이터(칼로리, 단백질, 탄수화물, 지방, 식이섬유, 당류, 나트륨, 수분, 식사 횟수)만 전송됩니다. 사진이나 신체 프로필, 오늘 이전의 식단 기록은 전송되지 않습니다.</li>
+    <li><strong>로컬 템플릿 코치 (Off 혹은 AI 서버 오류 상태):</strong> 사용자의 기기 내에서만 연산이 돌아갑니다. 기기 외부로 데이터가 유출되지 않습니다.</li>
+  
+          </ul>
+        </div>
+
+        <h3>“AI” 배지 — 정직한 출처 표기</h3>
+        <div class="note">분석 탭 코치 카드 상단에 표시되는 조언 메시지가 실제 외부 AI에 의해 실시간 계산된 것일 때만 조그마한 "AI" 표시 배지가 활성화됩니다. 스위치를 꺼두거나 키에 잔액이 없어 기기 내부 로컬 템플릿에 의해 구성된 추천 의견으로 채워진 경우에는 "AI" 배지가 자동으로 비활성화되어 조언의 출처를 정직하게 밝힙니다.</div>
+
+        <h3>AI 식단 코치를 비활성화하는 방법 (설정)</h3>
+        
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>설정 열기</strong><br>
+        FuelFit 하단 메뉴에서 "설정" 탭으로 이동합니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>"AI 서비스" 누르기</strong><br>
+        AI 서비스 아코디언 메뉴를 탭하면, 제공업체 입력란 아래로 "AI 식단 코치" 토글 버튼이 보입니다.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>토글 스위치 끄기</strong><br>
+        스위치를 비활성화하면 AI 연산 대신 기기 내장 템플릿 기반 피드백이 노출되며 카드 옆 "AI" 마크가 소멸합니다. 사진 분석은 기존대로 계속 이용이 가능합니다.
+      </div>
+    </div>
+  
+
+        <h3>온보딩 과정 중 흐름</h3>
+        <p style="color: var(--text2); font-size: 0.9rem;">앱을 처음 실행하여 AI 설정 단계를 거칠 때 두 가지 경로가 제공됩니다:</p>
+        <ul style="color: var(--text2); font-size: 0.9rem; margin-left: 1.25rem; margin-bottom: 0.5rem;">
+          
+    <li><strong>제공업체를 구성하고 연결을 확인한 경우</strong> — 다음 단계 화면에서 AI 식단 코치 스위치(기본 On)를 만나게 되며, 원치 않을 경우 거기서 미리 비활성화해둘 수 있습니다.</li>
+    <li><strong>건너뛰기를 선택한 경우</strong> — 스위치 확인 단계가 자동으로 생략되고 코치 기능은 Off 상태로 기본값 세팅됩니다. AI 기능이 잠겨 있음을 알리는 안내 배너가 표시되며 추후 설정에서 언제든지 활성화가 가능합니다.</li>
+  
+        </ul>
+
+        <div class="note"><strong>개인정보 참고 사항:</strong> AI 식단 코치 스위치가 꺼진 상태에서는, 사용자가 직접 카메라 버튼을 탭해 사진을 전송하지 않는 이상 서버를 호출하지 않습니다. 코칭 및 요약 피드백은 100% 사용자의 기기 로컬 템플릿으로 안전하게 계산됩니다.</div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2>자주 묻는 질문 (FAQ)</h2>
+      <div class="card">
+        
+      <h3>API 키는 안전하게 보호되나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">네. 입력한 API 키는 기기 저장소 내에 안전하게 암호화 보관됩니다. FuelFit은 <strong>백엔드 서버가 존재하지 않으므로</strong> 데이터는 중간 서버를 거치지 않고 지정한 AI 제공업체로 직접 다이렉트 전송됩니다. 개발사에서 키나 식사 정보를 탈취하거나 관찰하는 것은 불가능합니다.</p>
+    
+      <h3>휴대폰을 변경할 때 데이터는 어떻게 되나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">설정 메뉴 내부에 "내보내기/가져오기" 기능이 있습니다. 데이터를 파일 형식으로 백업하여 새 휴대폰으로 가져오면 기존 식단 기록, 사용자 설정 및 암호화된 API 키까지 그대로 이전됩니다.</p>
+    
+      <h3>코칭 서비스는 꺼두고 식사 사진 분석용으로만 AI를 쓸 수 있나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">네, 가능합니다. <strong>설정 → AI 서비스</strong> 탭의 <strong>AI 식단 코치</strong> 토글 스위치만 꺼두시면 사진 분석을 위한 Vision API 기능만 활성화된 상태로 원활히 이용하실 수 있습니다.</p>
+    
+      <h3>여러 업체의 API 키를 저장해 두고 교대로 사용 가능한가요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">활성화되는 서비스는 항상 하나뿐이지만, 설정 화면에서 내장된 3개 업체(Qwen, OpenAI, Mistral)의 키가 각각 기억되므로 터치 한번만으로 제공업체를 신속히 교대하여 쓸 수 있습니다.</p>
+    
+      <h3>API 잔액이 소진되면 어떻게 되나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">사진 촬영 시 에러가 출력되거나 식단 코칭 메시지가 갱신되지 못하고 로컬 템플릿으로 대체되어 카드 옆 "AI" 마크가 소멸합니다. 제공업체 대시보드에 금액을 충전해 주시면 즉시 정상화되며, 로컬 식단 기록은 여전히 안전하게 보존됩니다.</p>
+    
+      <h3>FuelFit을 사용하려면 API 키가 반드시 있어야 하나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">아닙니다. API 키를 등록하지 않아도 수동 식단 일지 작성, 칼로리 기록 및 목표 관리는 평생 완전 무료로 가능합니다. 사진 분석이나 AI 실시간 조언이 필요할 때만 키를 등록해 사용해 주세요.</p>
+    
+      <h3>어느 제공업체를 택하는 것이 좋을까요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        <ul style="color: var(--text2); font-size: 0.9rem;">
+          <li><strong>기본값:</strong> Qwen <code>qwen3-vl-flash</code> — 요금이 제일 저렴하며 아시아권 음식 인식률 우수, 신규 100만 무료 토큰 지원</li>
+          <li><strong>품질 우선:</strong> OpenAI <code>gpt-4o-mini</code> — 가장 전형적이며 응답의 안정성이 검증됨</li>
+          <li><strong>유럽 권역:</strong> Mistral <code>mistral-small-latest</code></li>
+          <li><strong>기타 (Claude, Gemini 등):</strong> <strong>Custom</strong>을 활용해 <a href="https://openrouter.ai" target="_blank">OpenRouter</a>를 통해 가입 및 연결하시길 추천합니다</li>
+        </ul>
+      </p>
+    
+      <h3>제공업체를 다른 곳으로 변경하려면 어떻게 하나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;"><strong>설정 → AI 서비스</strong> 화면으로 가셔서 목록에서 변경하고 싶은 제공업체를 누르고, 새 API 키를 등록하고 <strong>연결 확인</strong>을 눌러주면 완료됩니다.</p>
+    
+      <h3>왜 내장 제공업체의 모델 필드가 수정 가능하게 열려 있나요?</h3>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">기본 내장된 모델명은 요율 대비 성능이 우수한 모델로 저희가 추천해 둔 것입니다. 더 우수한 화질 해석을 원하신다면 Qwen의 <code>qwen3-vl-plus</code> 등으로 상향 수정하거나 OpenAI의 <code>gpt-4o</code>를 입력하여 테스트할 수 있도록 편집 가능하게 개방해 두었습니다.</p>
+    
+      </div>
+    </section>
+
+    <footer>
+      <p>FuelFit AI 제공업체 가이드 — 내부 참조용 문서</p>
+      <p style="margin-top: 0.5rem;">2026년 6월 배포된 OpenAI/Qwen/Mistral 제공업체 마이그레이션 규격을 따르고 있습니다. 명시된 금액은 각 공급사의 공개 요금표를 대조하여 계산한 예상 수치입니다.</p>
+    </footer>
+  </div>
+</body>
+</html>
