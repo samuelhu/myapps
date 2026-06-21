@@ -695,7 +695,7 @@
       <div class="card">
         
       <h3>Ma clé API est-elle sécurisée ?</h3>
-      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Oui. Votre clé API est chiffrée au repos et stockée uniquement sur votre appareil. FuelFit n'a <strong>pas de serveur backend</strong> — c'est une application purement côté client. Tous les appels IA partent de votre appareil directement vers le fournisseur choisi. Nous ne collectons ni ne voyons jamais vos données.</p>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Oui. Votre clé API est stockée de manière sécurisée dans le stockage sécurisé natif de votre appareil (iOS Keychain / Android Keystore via <code>capacitor-secure-storage-plugin</code>) et n'est jamais stockée dans le stockage local standard ni dans IndexedDB. FuelFit n'a <strong>aucun serveur backend</strong> — c'est une application purement côté client. Tous les appels IA partent directement de votre appareil vers le fournisseur choisi. Nous ne voyons ni ne collectons jamais vos données.</p>
     
       <h3>Qu'en est-il du changement de téléphone ?</h3>
       <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit propose une option de <strong>Transfert (Export/Import)</strong> intégrée dans les Paramètres. Exportez vos données dans un fichier, puis importez-le sur le nouvel appareil. Vos repas, réglages et clés API (chiffrées) sont transférés en une seule étape.</p>

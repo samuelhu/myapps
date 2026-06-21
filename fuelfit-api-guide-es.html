@@ -695,7 +695,7 @@
       <div class="card">
         
       <h3>¿Es segura mi clave API?</h3>
-      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Sí. Su clave API se encripta en reposo y se almacena únicamente en su dispositivo. FuelFit <strong>no tiene servidor backend</strong>; es una aplicación puramente del lado del cliente. Todas las llamadas de IA van directamente desde su dispositivo al proveedor que eligió. Nunca vemos ni recopilamos sus datos.</p>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Sí. Su clave API se almacena de forma segura en el almacenamiento seguro nativo de su dispositivo (iOS Keychain / Android Keystore a través de <code>capacitor-secure-storage-plugin</code>) y nunca se guarda en el almacenamiento local estándar ni en IndexedDB. FuelFit <strong>no tiene servidor backend</strong>; es una aplicación puramente del lado del cliente. Todas las llamadas de IA van directamente desde su dispositivo al proveedor que eligió. Nunca vemos ni recopilamos sus datos.</p>
     
       <h3>¿Qué pasa al cambiar de dispositivo?</h3>
       <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit incluye una función integrada de <strong>Exportar/Importar</strong> en Configuración. Exporte sus datos a un archivo y luego impórtelo en su nuevo dispositivo. Sus comidas, configuraciones y claves API (encriptadas) se transferirán en un solo paso.</p>

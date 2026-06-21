@@ -695,7 +695,7 @@
       <div class="card">
         
       <h3>APIキーは安全に保護されますか？</h3>
-      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">はい。設定されたAPIキーは端末内に暗号化して保存されます。FuelFitには<strong>バックエンドサーバーが存在しない</strong>ため、データは他者を経由せず、直接指定のAIプロバイダーへ送信されます。開発元がキーや食事データを閲覧・収集することは技術的に不可能です。</p>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">はい。APIキーはデバイスのネイティブセキュアストレージ（<code>capacitor-secure-storage-plugin</code>を介したiOS Keychain / Android Keystore）に安全に保存され、通常のローカルストレージやIndexedDBには保存されません。FuelFitには<strong>バックエンドサーバーが存在しない</strong>ため、純粋なクライアントサイドアプリです。すべてのAI呼び出しは、デバイスから選択したプロバイダーに直接送信されます。开发元がお客様のデータやキーを収集または閲覧することはありません。</p>
     
       <h3>機種変更時のデータ移行はどうなりますか？</h3>
       <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">設定メニュー内に「インポート/エクスポート」機能を備えています。データをファイルに出力し、新しい端末で読み込ませるだけで、食事データ、設定、さらには暗号化されたAPIキーも一括で移行できます。</p>

@@ -695,7 +695,7 @@
       <div class="card">
         
       <h3>我的 API 密钥安全吗？</h3>
-      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">安全。您的 API 密钥在设备本地进行加密存储。FuelFit 没有后端服务器 — 它是一个纯客户端应用。所有 AI 调用都是从您的设备直接发送 to 您选择的服务商。我们永远不会收集或查看您的数据。</p>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">安全。您的 API 密钥安全地存储在您设备的原生安全存储中（通过 <code>capacitor-secure-storage-plugin</code> 的 iOS Keychain / Android Keystore），绝对不会存储在标准的本地存储（local storage）或 IndexedDB 中。FuelFit <strong>没有后端服务器</strong> — 它是一个纯客户端应用。所有 AI 调用都直接从您的设备发送给您选择的服务商。我们永远不会收集或查看您的数据。</p>
     
       <h3>更换设备怎么办？</h3>
       <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit 在“设置”中提供了内置的“导入/导出”功能。在一台设备上导出数据为文件，然后在另一台设备上导入即可。您的餐食记录、设置以及（加密的）API 密钥会一步完成迁移。</p>

@@ -175,12 +175,12 @@
       </ul>
 
       <h2>3. Data Stored Locally</h2>
-      <p>All data you create in FuelFit is stored <strong>exclusively on your device</strong> using localStorage. This includes:</p>
+      <p>All data you create in FuelFit is stored <strong>exclusively on your device</strong> (using local databases like IndexedDB/localStorage). This includes:</p>
       <ul>
         <li>Meal entries and nutrition logs</li>
         <li>Water intake records</li>
         <li>Personal settings (weight, goals, dietary preferences)</li>
-        <li>AI provider API keys (encrypted)</li>
+        <li>AI provider API keys (stored in native secure storage)</li>
       </ul>
       <p>This data never leaves your device unless you explicitly choose to export or share it.</p>
 
@@ -189,7 +189,7 @@
       <ul>
         <li><strong>Your photo is sent directly</strong> to the AI provider you select (e.g., Gemini, OpenAI, MiMo, Qwen)</li>
         <li>You must provide your own API key for the chosen provider</li>
-        <li>Your API key is encrypted with an "enc:" prefix and stored locally on your device</li>
+        <li>Your API key is stored in native secure storage (iOS Keychain / Android Keystore via capacitor-secure-storage-plugin) and is never stored in standard local storage or IndexedDB</li>
         <li>We do not intermediate, log, or store any images or AI responses</li>
       </ul>
       <p>Please refer to the privacy policy of your chosen AI provider for how they handle images and data.</p>

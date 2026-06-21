@@ -695,7 +695,7 @@
       <div class="card">
         
       <h3>Ist mein API-Schlüssel sicher?</h3>
-      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Ja. Ihr API-Schlüssel wird lokal verschlüsselt gespeichert. FuelFit hat keinen Backend-Server — es ist eine reine Client-Side-App. Alle KI-Aufrufe gehen direkt von Ihrem Gerät an den von Ihnen gewählten Anbieter. Wir erfassen oder sehen Ihre Daten niemals.</p>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">Ja. Ihr API-Schlüssel wird sicher im nativen sicheren Speicher Ihres Geräts (iOS Keychain / Android Keystore über <code>capacitor-secure-storage-plugin</code>) gespeichert und niemals im standardmäßigen lokalen Speicher oder in IndexedDB abgelegt. FuelFit hat keinen Backend-Server — es ist eine reine Client-Side-App. Alle KI-Aufrufe gehen direkt von Ihrem Gerät an den von Ihnen gewählten Anbieter. Wir erfassen oder sehen Ihre Daten niemals.</p>
     
       <h3>Was ist bei einem Gerätewechsel?</h3>
       <p style="color: var(--text2); font-size: 0.9rem; margin-bottom: 1.25rem;">FuelFit enthält eine integrierte Export/Import-Funktion in den Einstellungen. Exportieren Sie Ihre Daten in eine Datei und importieren Sie sie auf Ihrem neuen Gerät. Ihre Mahlzeiten, Einstellungen und (verschlüsselten) API-Schlüssel werden in einem Schritt übertragen.</p>

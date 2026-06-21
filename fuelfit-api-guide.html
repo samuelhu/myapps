@@ -526,7 +526,7 @@
       <h2>Frequently Asked Questions</h2>
       <div class="card">
         <h3>Is my API key safe?</h3>
-        <p>Yes. Your API key is encrypted at rest and stored only on your device. FuelFit has <strong>no backend server</strong> — it's a purely client-side app. All AI calls go directly from your device to the provider you chose. We never see or collect your data.</p>
+        <p>Yes. Your API key is stored securely in your device's native secure storage (iOS Keychain / Android Keystore via <code>capacitor-secure-storage-plugin</code>) and is never stored in standard local storage or IndexedDB. FuelFit has <strong>no backend server</strong> — it's a purely client-side app. All AI calls go directly from your device to the provider you chose. We never see or collect your data.</p>
 
         <h3>What about switching devices?</h3>
         <p>FuelFit includes a built-in <strong>Export/Import</strong> function in Settings. Export your data as a file, then import it on your new device. Your meals, settings, and (encrypted) API keys transfer in one step.</p>
